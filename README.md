@@ -1,7 +1,10 @@
 # FIKA
+
 This repository contains the Far-field Intensity through Kinetic Analysis (FIKA) code, a Python-based computational tool designed for analyzing far-field radiation intensity from accelerated particles. FIKA leverages the Liénard-Wiechert potentials to calculate the radiation emitted by charged particles directly from their trajectories. The code calculates temporal profile of the radiated spectrum. It also employs Fourier transform techniques to analyze the frequency spectrum of the radiation.
 
-To run the serial (nonparallel) version of FIKA, ensure you have the following Python packages installed, compatible with your version of Python:
+## Requirements
+
+Python 3 is required to run the FIKA code (version 3.7 and higher recommended). To run the serial (nonparallel) version of FIKA, ensure you have the following Python packages installed, compatible with your version of Python:
 - `h5py`
 - `matplotlib`
 - `numpy`
