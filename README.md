@@ -25,7 +25,7 @@ To execute the FIKA simulation, follow these steps:
       
           input_file = '/home/where_my_file_is/particle_trajectories.h5'
       
-        The HDF5 file    contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`  ,..... Each group represents one particle          and contains datasets for the following quantities that need to be expressed in the SI units: 
+        The HDF5 file contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`  ,..... Each group represents one particle and contains datasets for the following quantities that need to be expressed in the SI units: 
        - `time` : Time is the units of s, a data of time values in which the particle trajectory was tracked. 
        - `x` : x position of the particle in the units of m, expressed in corresponding times
        - `y` : y position of the particle in the units of m, expressed in corresponding times
@@ -67,24 +67,18 @@ To execute the FIKA simulation, follow these steps:
       
     - `E_radMax_eV`
       
-         Maximum radiation energy expected in the units of eV. The sampling of Fourier transformation will be 20x this value. The mmaximum energy has to be higher than 2x this     value for correct sampling. If you find out that the highest photon energy is higher than this value, we recommend to rerun the code increasing this value. Example:
+         Maximum radiation energy expected in the units of eV. The sampling of Fourier transformation will be 20x this value. The maximum energy has to be higher than 2x this value for correct sampling. If you find out that the highest photon energy is higher than this value, we recommend to rerun the code increasing this value. Example:
     
     
           E_radMax_eV = 1000 
    
-    
-    - `E_slice_eV` 
-      
-        A bin energy size in the units of eV of the final output energy spectrum histogram. Example:
+    - `r`
 
-          E_slice_eV = 2 
-
-    - `t_slice_s`
+       Radial position in the spherical coordinates in the units of m, giving the position of the observer. Example:
       
-         A bin time size in the units of second of the final output of the radiation temporal profile. Example:
-   
-          t_slice_s = 5e-18
-    
+          r = 1
+
+
     - `phi`
 
        Angle φ in the spherical coordinates, giving the position of the observer. Example:
@@ -99,12 +93,58 @@ To execute the FIKA simulation, follow these steps:
           from numpy import pi
           theta = pi/2
 
+    - `print_every_par_spectrum`
+
+       Specifies how often the information about the calculation progress will be written into a standard output. The number specifies the number of particles processed after which the output will be printed. Example:
+
+          print_every_par_spectrum  = 200 
+
+    -  `sum_spectra`
     
+        If `True`, the energy spectra and temporal profiles of individual particles will be summed to obtain a compact information about the whole particle beam. The summation process starts after radiation from all the particles is calculated. If `False`, the calculation is finished right after the individual spectra are calculated.
+
+        Following additional parameters need to be specified in the output file 
+            
+       - `E_slice_eV` 
+      
+        A bin energy size in the units of eV of the final output energy spectrum histogram. Example:
+
+            E_slice_eV = 2 
+
+       - `t_slice_s`
+      
+         A bin time size in the units of second of the final output of the radiation temporal profile. Example:
+   
+            t_slice_s = 5e-18
+
+       -  `print_every_spectrum_sum` 
+       
+         Specifies how often the information about the summation progress will be written into a standard output. The number specifies the number of    particles that are already summed. Example:
+
+            print_every_spectrum_sum  = 200                                        
+
+
 4. Run the simulation using the following command:
 
     ```bash
     python run.py
     ```
+
+## Output 
+
+The output in the form of HDF file `individual_spectra.h5`, saved in the folder specified by the user. The HDF5 file contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`, ... representing the individual particles IDs corresponding to the original `input_file`. Each group contains following datasets: 
+       - `freq` : Energies of radiated photons in eV.
+       - `spectrum_freq` : Corresponding spectral intensity for each photon energy \(\frac{d^2 I}{d E d\Omega}\), expressed in the units of J/eV/sr.
+       - `t` : Range of the observer time in s.
+       - `spectrum_t` : Spectral intensity \(\frac{d^2 I}{d t d\Omega}\) corresponding to the observer time in the units of J/s/sr.
+
+In case `sum_spectra=True` ia specified by the user, another HDF5 file `final_spectrum.h5` is created, cointaining following groups:
+       - `freq` : Energies of radiated photons in eV.
+       - `spectrum_freq` : Corresponding spectral intensity for each photon energy \(\frac{d^2 I}{d E d\Omega}\) summed for all the particles, expressed in the units of J/eV/sr.
+       - `t` : Range of the observer time in s.
+       - `spectrum_t` : Spectral intensity \(\frac{d^2 I}{d t d\Omega}\) summed for all the particles, corresponding to the observer time in the units of J/s/sr.
+
+
 <!--
 ## Authors
 FIKA is authored by Dominika Maslarova and the members of the
