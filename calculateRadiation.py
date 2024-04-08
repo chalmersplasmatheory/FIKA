@@ -106,25 +106,30 @@ def calculate_spectrum(fft_squared):
 
 # Write individual particle spectra to an .h5 file
 def write_spectra_to_file(output_folder, id, freq, dI_dE_dOmega, t, R0, dI_dt_dOmega, weights, weight):
+
+  # Convert frequencies to eV energies for the output  
+  freq_to_eV = 2 * pi * hbar / e 
+  ene        = freq_to_eV * freq
+
   # Include PIC macroparticle weights in processed_data if weights are used
   if weights ==True:
     processed_data = {
-      "freq": freq,  
-      "spectrum_freq": dI_dE_dOmega,
+      "ene": ene,  
+      "spectrum_ene": dI_dE_dOmega,
       "t": t-R0/c,
       "spectrum_t": dI_dt_dOmega,
       "weight":weight,
     }   
   else:
     processed_data = {
-      "freq": freq,  
-      "spectrum_freq": dI_dE_dOmega,
+      "ene": ene,  
+      "spectrum_ene": dI_dE_dOmega,
       "t": t-R0/c,
       "spectrum_t": dI_dt_dOmega,
     }  
     
   # Save the processed data under a group named after the particle ID
-  with h5py.File(os.path.join(output_folder, 'spectra.h5'), 'a') as outfile:
+  with h5py.File(os.path.join(output_folder, 'individual_spectra.h5'), 'a') as outfile:
     grp = outfile.create_group(str(id))
     for data_key, data_value in processed_data.items():
       grp.create_dataset(data_key, data = data_value)
@@ -157,63 +162,62 @@ def get_time_range(t_slice_s, file_to_sum):
   time_range = np.linspace(min_t, max_t, num = num_t)
   return(time_range)
 
-# Determine the frequency range for the summation of all the spectra
-# Similar to get_time_range, this function finds the overall frequency range for aggregating spectral data
-def get_freq_range(E_slice_eV, file_to_sum):
-  freq_id_index = 0
+# Determine the energy range for the summation of all the spectra
+# Similar to get_time_range, this function finds the overall energy range for aggregating spectral data
+def get_ene_range(E_slice_eV, file_to_sum):
+  ene_id_index = 0
   for par_id in file_to_sum.keys():
-    # Read the frequencies for the current particle
-    current_freq     = np.array(file_to_sum[par_id]['freq'][:])
-    # Maximum frequency for the current particle
-    current_max_freq = np.max(current_freq)
-    # Set the  maximum frequency to the values of the 1st particle, then update if needed
-    if freq_id_index == 0 or current_max_freq > max_freq:
-      max_freq = current_max_freq
-    freq_id_index += 1   
+    # Read the energies for the current particle
+    current_ene     = np.array(file_to_sum[par_id]['ene'][:])
+    # Maximum energy for the current particle
+    current_max_ene = np.max(current_ene)
+    # Set the  maximum energy to the values of the 1st particle, then update if needed
+    if ene_id_index == 0 or current_max_ene > max_ene:
+      max_ene = current_max_ene
+    ene_id_index += 1   
 
-  # The user energy input is converted to the unit of 1/s
-  freq_un        = e / (2*pi*hbar) * E_slice_eV
-  # The upper frequency is determined as max from all the particles 
-  num_freq       = int(round(max_freq/freq_un))
-  freq_range     = np.linspace(0, max_freq, num = num_freq)
-  return freq_range  
+
+  # The upper requency is determined as max from all the particles 
+  num_ene       = int(round(max_ene/E_slice_eV))
+  ene_range     = np.linspace(0, max_ene, num = num_ene)
+  return ene_range  
 
 # Read, sum, and optionally PIC-weight spectra from all the particles
 def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_every_spectrum_sum):
   # Store number of particles processed to print
   curr_num_par_sum = 0 
 
-  with h5py.File(output_folder + 'spectra.h5', 'r') as file_to_sum:
-    # Get the frequency range of the whole spectrum from the user input 
-    freq_range    = get_freq_range(E_slice_eV, file_to_sum)
+  with h5py.File(output_folder + 'individual_spectra.h5', 'r') as file_to_sum:
+    # Get the energy range of the whole spectrum from the user input 
+    ene_range    = get_ene_range(E_slice_eV, file_to_sum)
     time_range    = get_time_range(t_slice_s, file_to_sum)
 
     # Preallocate arrays for spectrum and temporal profile
-    fin_spec_freq  = np.zeros(np.size(freq_range))
+    fin_spec_ene   = np.zeros(np.size(ene_range))
     fin_spec_t     = np.zeros(np.size(time_range))
 
     for id in file_to_sum.keys():
-      dataset        = file_to_sum[id]
-      current_freq   = np.array(dataset['freq'][:])
-      current_spec_freq   = np.array(dataset['spectrum_freq'][:])
-      current_t      = np.array(dataset['t'][:])
-      current_spec_t = np.array(dataset['spectrum_t'][:])
+      dataset          = file_to_sum[id]
+      current_ene      = np.array(dataset['ene'][:])
+      current_spec_ene = np.array(dataset['spectrum_ene'][:])
+      current_t        = np.array(dataset['t'][:])
+      current_spec_t   = np.array(dataset['spectrum_t'][:])
       if weights:
         current_weight = np.array(dataset['weight'][0])
 
       # Sum the spectral data, accounting for the weight of each particle if applicable
-      # Each particle has a different frequency sampling
-      # The intensity value is assigned to the closest frequency value of the final spectrum sampling
-      for f_num in range(0, len(current_freq)):
-        index_of_closest_freq = (np.abs(freq_range - current_freq[f_num])).argmin()
+      # Each particle has a different energy sampling
+      # The intensity value is assigned to the closest energy value of the final spectrum sampling
+      for f_num in range(0, len(current_ene)):
+        index_of_closest_ene = (np.abs(ene_range - current_ene[f_num])).argmin()
         # If weights are included, spectrum from each macroparticle is multiplied by the real number of particles
         if weights == True:
-          current_spec_to_sum = current_spec_freq[f_num] * current_weight
+          current_spec_to_sum = current_spec_ene[f_num] * current_weight
         else:
-          current_spec_to_sum = current_spec_freq[f_num]            
-        fin_spec_freq[index_of_closest_freq] += current_spec_to_sum
+          current_spec_to_sum = current_spec_ene[f_num]            
+        fin_spec_ene[index_of_closest_ene] += current_spec_to_sum
 
-      # Sum the spectral data for observer time signal, similarly to the frequency above
+      # Sum the spectral data for observer time signal, similarly to the energy above
       for t_num in range(0, len(current_t)):
         index_of_closest_t              = (np.abs(time_range - current_t[t_num])).argmin()
         if weights == True:
@@ -226,14 +230,14 @@ def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_ev
       if curr_num_par_sum % print_every_spectrum_sum == 0 and curr_num_par_sum != 0:
         print('Spectrum from ' + str(curr_num_par_sum)+' particles is already summed.')
       curr_num_par_sum += 1
-  return freq_range, fin_spec_freq, time_range, fin_spec_t
+  return ene_range, fin_spec_ene, time_range, fin_spec_t
 
 # For writing the summation of all particle spectra into the final output file
 # Saves the aggregated spectra and temporal profiles to a final HDF5 file
-def write_final_spectrum_to_file(output_folder, time_range, fin_spec_t, freq_range, fin_spec_freq):
+def write_final_spectrum_to_file(output_folder, time_range, fin_spec_t, ene_range, fin_spec_ene):
   with h5py.File(output_folder + 'final_spectrum.h5', 'w') as final_file_to_write:
-    final_file_to_write.create_dataset('freq', data = freq_range )
-    final_file_to_write.create_dataset('spectrum_freq', data = fin_spec_freq)   
+    final_file_to_write.create_dataset('ene', data = ene_range)
+    final_file_to_write.create_dataset('spectrum_ene', data = fin_spec_ene)   
     final_file_to_write.create_dataset('t', data = time_range )
     final_file_to_write.create_dataset('spectrum_t', data = fin_spec_t)     
 
@@ -249,7 +253,7 @@ def remove_existing_file(file_path):
 def calculate_spectrum_one_particle(charge,E_radMax_eV, r, phi, theta, input_file, output_folder, weights, print_every_par_spectrum):
 
   # If the file spectra.h5 exists in the folder, remove it to avoid clash
-  remove_existing_file(output_folder +'spectra.h5')
+  remove_existing_file(output_folder +'individual_spectra.h5')
 
   # Open the input file containing particle trajectories and properties
   with h5py.File(input_file, 'r') as file:
@@ -316,6 +320,6 @@ def calculate_spectrum_one_particle(charge,E_radMax_eV, r, phi, theta, input_fil
 # Function to aggregate spectra from all particles and save the final results
 # Summarizes the collective radiation impact from all particles
 def calculate_spectrum_all_particles(output_folder, E_slice_eV, t_slice_s, weights, print_every_spectrum_sum):
-  freq_range, fin_spec_freq, time_range, fin_spec_t = read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_every_spectrum_sum)
+  ene_range, fin_spec_ene, time_range, fin_spec_t = read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_every_spectrum_sum)
   remove_existing_file(output_folder + 'final_spectrum.h5')
-  write_final_spectrum_to_file(output_folder, time_range, fin_spec_t, freq_range, fin_spec_freq)
+  write_final_spectrum_to_file(output_folder, time_range, fin_spec_t, ene_range, fin_spec_ene)
