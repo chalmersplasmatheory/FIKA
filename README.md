@@ -95,7 +95,7 @@ To execute the FIKA simulation, follow these steps:
 
     - `print_every_par_spectrum`
 
-       Specifies how often the information about the calculation progress will be written into a standard output. The number specifies the number of particles processed after which the output will be printed. Example:
+       Specifies how often the information about the calculation progress will be written into a standard output. The number specifies the new number of particles processed after which the output will be printed. Example:
 
           print_every_par_spectrum  = 200 
 
@@ -133,16 +133,16 @@ To execute the FIKA simulation, follow these steps:
 ## Output 
 
 The output in the form of HDF file `individual_spectra.h5`, saved in the folder specified by the user. The HDF5 file contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`, ... representing the individual particles IDs corresponding to the original `input_file`. Each group contains following datasets: 
-       - `freq` : Energies of radiated photons in eV.
-       - `spectrum_freq` : Corresponding spectral intensity for each photon energy \(\frac{d^2 I}{d E d\Omega}\), expressed in the units of J/eV/sr.
-       - `t` : Range of the observer time in s.
-       - `spectrum_t` : Spectral intensity \(\frac{d^2 I}{d t d\Omega}\) corresponding to the observer time in the units of J/s/sr.
+   - `freq` : Energies of radiated photons in eV.
+   - `spectrum_freq` : Corresponding spectral intensity for each photon energy $\(\frac{d^2 I}{d E d\Omega}\)$, expressed in the units of J/eV/sr.
+   - `t` : Range of the observer time in s.
+   - `spectrum_t` : Spectral intensity $\(\frac{d^2 I}{d t d\Omega}\)$ corresponding to the observer time in the units of J/s/sr.
 
 In case `sum_spectra=True` ia specified by the user, another HDF5 file `final_spectrum.h5` is created, cointaining following groups:
-       - `freq` : Energies of radiated photons in eV.
-       - `spectrum_freq` : Corresponding spectral intensity for each photon energy \(\frac{d^2 I}{d E d\Omega}\) summed for all the particles, expressed in the units of J/eV/sr.
-       - `t` : Range of the observer time in s.
-       - `spectrum_t` : Spectral intensity \(\frac{d^2 I}{d t d\Omega}\) summed for all the particles, corresponding to the observer time in the units of J/s/sr.
+   - `freq` : Energies of radiated photons in eV.
+   - `spectrum_freq` : Corresponding spectral intensity for each photon energy \(\frac{d^2 I}{d E d\Omega}\) summed for all the particles, expressed in the units of J/eV/sr.
+   - `t` : Range of the observer time in s.
+   - `spectrum_t` : Spectral intensity \(\frac{d^2 I}{d t d\Omega}\) summed for all the particles, corresponding to the observer time in the units of J/s/sr.
 
 
 <!--
