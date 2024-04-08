@@ -101,25 +101,28 @@ To execute the FIKA simulation, follow these steps:
 
     -  `sum_spectra`
     
-        If `True`, the energy spectra and temporal profiles of individual particles will be summed to obtain a compact information about the whole particle beam. The summation process starts after radiation from all the particles is calculated. If `False`, the calculation is finished right after the individual spectra are calculated.
+        If `True`, the energy spectra and temporal profiles of individual particles will be summed to obtain a compact information about the whole particle beam. The summation process starts after radiation from all the particles is calculated. If `False`, the calculation is finished right after the individual spectra are calculated. Example:
+
+         sum_spectra  = True
+
 
         Following additional parameters need to be specified in the output file 
             
        - `E_slice_eV` 
       
-        A bin energy size in the units of eV of the final output energy spectrum histogram. Example:
+            A bin energy size in the units of eV of the final output energy spectrum histogram. Example:
 
             E_slice_eV = 2 
 
        - `t_slice_s`
       
-         A bin time size in the units of second of the final output of the radiation temporal profile. Example:
+            A bin time size in the units of second of the final output of the radiation temporal profile. Example:
    
             t_slice_s = 5e-18
 
        -  `print_every_spectrum_sum` 
        
-         Specifies how often the information about the summation progress will be written into a standard output. The number specifies the number of    particles that are already summed. Example:
+            Specifies how often the information about the summation progress will be written into a standard output. The number specifies the number of    particles that are already summed. Example:
 
             print_every_spectrum_sum  = 200                                        
 
