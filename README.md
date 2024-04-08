@@ -1,10 +1,10 @@
 # FIKA
 
-This repository contains the Far-field Intensity through Kinetic Analysis (FIKA) code, a Python-based computational tool designed for analyzing far-field radiation intensity from accelerated particles. FIKA leverages the Liénard-Wiechert potentials to calculate the radiation emitted by charged particles directly from their trajectories. The code calculates temporal profile of the radiated spectrum. It also employs Fourier transform techniques to analyze the frequency spectrum of the radiation.
+This repository contains the Far-field Intensity through Kinetic Analysis (FIKA) code, a Python-based computational tool designed for analyzing far-field radiation intensity from accelerated particles. FIKA leverages the Liénard-Wiechert potentials to calculate the radiation emitted by charged particles directly from their trajectories. The code calculates the temporal profile of the radiated spectrum. It also uses Fourier transform techniques to analyze the frequency spectrum of the radiation.
 
 ## Requirements
 
-Python 3 is required to run the FIKA code (version 3.7 and higher recommended). To run the serial (nonparallel) version of FIKA, ensure you have the following Python packages installed, compatible with your version of Python:
+Python 3 is required to run the FIKA code, with version 3.7 or higher recommended for optimal compatibility and performance. To run the serial (non-parallel) version of FIKA, ensure you have the following Python packages installed, compatible with your version of Python:
 - `h5py`
 - `matplotlib`
 - `numpy`
@@ -26,17 +26,16 @@ To execute the FIKA simulation, follow these steps:
           input_file = '/home/where_my_file_is/particle_trajectories.h5'
       
         The HDF5 file contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`  ,..... Each group represents one particle and contains datasets for the following quantities that need to be expressed in the SI units: 
-       - `time` : Time is the units of s, a data of time values in which the particle trajectory was tracked. 
-       - `x` : x position of the particle in the units of m, expressed in corresponding times
-       - `y` : y position of the particle in the units of m, expressed in corresponding times
-       - `z` : z position of the particle in the units of m, expressed in corresponding times
-       - `vx` : velocity of the particle in the x direction in the units of m/s, expressed in corresponding times
-       - `vy` : velocity of the particle in the y direction in the units of m/s, expressed in corresponding times
-       - `vz` : velocity of the particle in the z direction in the units of m/s, expressed in corresponding times
-       - `PIC_macroparticle_weight` (OPTIONAL) : If the particle data are obtained from a particle-in-cell (PIC) code, one "particle" typically corresponds to a macroparticle, representing a real number of electrons. PIC_macroparticle_weight is this real number of particles represented by the macroparticle. It needs to be included if the calculated radiation unit is required to be realistic.  
+       - `time` : A dataset of time values (in seconds) at which the particle trajectory was tracked.
+       - `x` : The x position of the particle (in meters), corresponding to each time value.
+       - `y` : The y position of the particle (in meters), corresponding to each time value.
+       - `z` : The z position of the particle (in meters), corresponding to each time value.
+       - `vx` : The velocity of the particle in the x direction (in meters per second), corresponding to each time value.
+       - `vy` : The velocity of the particle in the y direction (in meters per second), corresponding to each time value.
+       - `vz` : The velocity of the particle in the z direction (in meters per second), corresponding to each time value.
+       - `PIC_macroparticle_weight` (OPTIONAL) : If the particle data are obtained from a particle-in-cell (PIC) code, one "particle" typically corresponds to a macroparticle, representing a real number of particles. PIC_macroparticle_weight is this real number of particles represented by the macroparticle. It needs to be included if the calculated radiation unit is required to be realistic.  
 
-            
-
+   
 
     - `output_folder`
     
@@ -47,82 +46,80 @@ To execute the FIKA simulation, follow these steps:
     
     - `PIC_macroparticle_weights`
     
-       Takes boolean `True` or `False`. Use `True` only if you included `PIC_macroparticle_weight` parameter in the input file and you want to include the macropaticle weights (real number of electrons representing the macroparticle) in the calculations. Example:
+       Accepts a boolean value, `True` or `False`. Set to `True` if you have included the PIC_macroparticle_weight parameter in the input file and wish to incorporate the macroparticle weights (the real number of particles represented by each macroparticle) in the calculations. Example:
     
            PIC_macroparticle_weights = True
 
     - `parallel`
     
-       Only option currently available is `'Disabled'`. Parallel options coming soon. Example:
-    
+       The only option currently available is 'Disabled'. Support for parallel options is under development. Example:    
+       
            parallel = 'Disabled'
       
     - `charge`
     
-       Charge of one particle. In case of macroparticles, also put the charge of the REAL particle. Example (electron particle/macroparticle):
-      
+       Specifies the charge of one particle. In the case of PIC macroparticles, specify the charge of the actual particle represented. Example (for an electron particle/macroparticle):      
             from scipy.constants import e
             charge = -e  
       
       
     - `E_radMax_eV`
-      
-         Maximum radiation energy expected in the units of eV. The sampling of Fourier transformation will be 20x this value. The maximum energy has to be higher than 2x this value for correct sampling. If you find out that the highest photon energy is higher than this value, we recommend to rerun the code increasing this value. Example:
     
+         Defines the maximum radiation energy expected, in units of eV. The Fourier transformation sampling will be 20 times this value. The actual maximum energy must be higher than twice this value for accurate sampling. If the user discovers that the highest photon energy exceeds this value, it is recommended to rerun the code with an increased `E_radMax_eV`. Example: 
     
           E_radMax_eV = 1000 
    
     - `r`
 
-       Radial position in the spherical coordinates in the units of m, giving the position of the observer. Example:
+       Specifies the radial position in spherical coordinates (in meters), indicating the observer's position. Example:
       
           r = 1
 
 
     - `phi`
 
-       Angle φ in the spherical coordinates, giving the position of the observer. Example:
+       Specifies azimuthal angle φ in spherical coordinates (in radians), indicating the observer's position. Example:
       
           phi = 0
 
     
     - `theta`
       
-        Angle θ in the spherical coordinates, giving the position of the observer. Example:
+        Specifies polar angle θ in spherical coordinates (in radians), indicating the observer's position. Example:
 
           from numpy import pi
           theta = pi/2
 
     - `print_every_par_spectrum`
 
-       Specifies how often the information about the calculation progress will be written into a standard output. The number specifies the new number of particles processed after which the output will be printed. Example:
+       Determines how often the information about the calculation progress will be written to the standard output. The specified number indicates the number of new particles processed after which the output will be printed. Example:
 
           print_every_par_spectrum  = 200 
 
     -  `sum_spectra`
     
-        If `True`, the energy spectra and temporal profiles of individual particles will be summed to obtain a compact information about the whole particle beam. The summation process starts after radiation from all the particles is calculated. If `False`, the calculation is finished right after the individual spectra are calculated. Example:
+        If `True`, the energy spectra and temporal profiles of individual particles will be summed to provide compact information about the entire particle beam. This summation process begins after the radiation from all particles has been calculated. If `False`, the calculation is finished right after the individual spectra are calculated. Example:
 
          sum_spectra  = True
 
 
-        Following additional parameters need to be specified in the output file 
+        The following additional parameters need to be specified in the output file with `sum_spectra  = True` option: 
             
        - `E_slice_eV` 
       
-            A bin energy size in the units of eV of the final output energy spectrum histogram. Example:
+            Specifies the bin energy size in eV for the final output energy spectrum histogram. Example:
 
             E_slice_eV = 2 
 
        - `t_slice_s`
       
-            A bin time size in the units of second of the final output of the radiation temporal profile. Example:
+            Specifies the bin time size in seconds for the final output of the radiation temporal profile. Example:
    
             t_slice_s = 5e-18
 
        -  `print_every_spectrum_sum` 
        
-            Specifies how often the information about the summation progress will be written into a standard output. The number specifies the number of    particles that are already summed. Example:
+            Indicates how often information about the summation progress will be written to the standard output. The number specifies how many new particles have been summed at each update. Example:
 
             print_every_spectrum_sum  = 200                                        
 
@@ -135,15 +132,15 @@ To execute the FIKA simulation, follow these steps:
 
 ## Output 
 
-The output in the form of HDF file `individual_spectra.h5`, saved in the folder specified by the user. The HDF5 file contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`, ... representing the individual particles IDs corresponding to the original `input_file`. Each group contains following datasets: 
-   - `freq` : Energies of radiated photons in eV.
-   - `spectrum_freq` : Corresponding spectral intensity for each photon energy $\(\frac{d^2 I}{d E d\Omega}\)$, expressed in the units of J/eV/sr.
-   - `t` : Range of the observer time in s.
+The output in the form of HDF file, named `individual_spectra.h5`, saved in the folder specified by the user. The HDF5 file contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`, ... representing the individual particles' IDs corresponding to the original `input_file`. Each group contains following datasets: 
+   - `ene` : Energies of radiated photons in eV.
+   - `spectrum_ene` : Corresponding spectral intensity for each photon energy $\(\frac{d^2 I}{d E d\Omega}\)$, expressed in the units of J/eV/sr.
+   - `t` : Range of the observer time in seconds.
    - `spectrum_t` : Spectral intensity $\(\frac{d^2 I}{d t d\Omega}\)$ corresponding to the observer time in the units of J/s/sr.
 
-In case `sum_spectra=True` ia specified by the user, another HDF5 file `final_spectrum.h5` is created, cointaining following groups:
-   - `freq` : Energies of radiated photons in eV.
-   - `spectrum_freq` : Corresponding spectral intensity for each photon energy \(\frac{d^2 I}{d E d\Omega}\) summed for all the particles, expressed in the units of J/eV/sr.
+In case `sum_spectra = True` ia specified by the user, another HDF5 file, `final_spectrum.h5`, is created, cointaining following groups:
+   - `ene` : Energies of radiated photons in eV.
+   - `spectrum_ene` : Corresponding spectral intensity for each photon energy \(\frac{d^2 I}{d E d\Omega}\) summed for all the particles, expressed in the units of J/eV/sr.
    - `t` : Range of the observer time in s.
    - `spectrum_t` : Spectral intensity \(\frac{d^2 I}{d t d\Omega}\) summed for all the particles, corresponding to the observer time in the units of J/s/sr.
 
