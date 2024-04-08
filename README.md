@@ -100,7 +100,7 @@ To execute the FIKA simulation, follow these steps:
     
         If `True`, the energy spectra and temporal profiles of individual particles will be summed to provide compact information about the entire particle beam. This summation process begins after the radiation from all particles has been calculated. If `False`, the calculation is finished right after the individual spectra are calculated. Example:
 
-         sum_spectra  = True
+          sum_spectra  = True
 
 
         The following additional parameters need to be specified in the output file with `sum_spectra  = True` option: 
@@ -134,9 +134,9 @@ To execute the FIKA simulation, follow these steps:
 
 The output in the form of HDF file, named `individual_spectra.h5`, saved in the folder specified by the user. The HDF5 file contains groups represented as natural ascending numbers (in the string format), i. e., `'1'` , `'2'` , `'3'`, ... representing the individual particles' IDs corresponding to the original `input_file`. Each group contains following datasets: 
    - `ene` : Energies of radiated photons in eV.
-   - `spectrum_ene` : Corresponding spectral intensity for each photon energy $\(\frac{d^2 I}{d E d\Omega}\)$, expressed in the units of J/eV/sr.
+   - `spectrum_ene` : Corresponding spectral intensity for each photon energy $\\frac{d^2 I}{d E d\Omega}\$, expressed in the units of J/eV/sr.
    - `t` : Range of the observer time in seconds.
-   - `spectrum_t` : Spectral intensity $\(\frac{d^2 I}{d t d\Omega}\)$ corresponding to the observer time in the units of J/s/sr.
+   - `spectrum_t` : Spectral intensity $\\frac{d^2 I}{d t d\Omega}\$ corresponding to the observer time in the units of J/s/sr.
 
 In case `sum_spectra = True` ia specified by the user, another HDF5 file, `final_spectrum.h5`, is created, cointaining following groups:
    - `ene` : Energies of radiated photons in eV.
