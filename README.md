@@ -127,7 +127,7 @@ To execute the FIKA simulation, follow these steps:
 4. Run the simulation using the following command:
 
     ```bash
-    python run.py
+    python main.py
     ```
 
 ## Output 
