@@ -169,7 +169,7 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
     - `smilei_file_to_convert`
 
-        Indicates the full path to the Smilei .h5 file containing particle tracking data, including the file name. It has to be the file that is already sorted by postprocessing with happi library. This can be done in TrackParticles diagnostic by choosing `sort = True` in `TrackParticles(..., sort = True, ...)`. See the Smilei documentation [2], "Open a TrackParticles diagnostic", for more information. Unsorted version cannot be processed! The following information about the particles need to be tracked: `'x', 'y', 'z', 'px', 'py', 'pz', 'w'`. Example for a sorted track file with species "electron":
+        Indicates the full path to the Smilei .h5 file containing particle tracking data, including the file name. It has to be the file that is already sorted by postprocessing with happi library. This can be done in TrackParticles diagnostic by choosing `sort = True` in `TrackParticles(..., sort = True, ...)`. See the Smilei documentation [2], "Open a TrackParticles diagnostic", for more information. The unsorted version cannot be processed! The following information about the particles need to be tracked: `'x', 'y', 'z', 'px', 'py', 'pz', 'w'`. Example for a sorted track file with species "electron":
 
         smilei_file_to_convert = 'TrackParticles_electron.h5' 
 
