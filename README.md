@@ -136,13 +136,13 @@ The output in the form of HDF file, named `individual_spectra.h5`, saved in the 
    - `ene` : Energies of radiated photons in eV.
    - `spectrum_ene` : Photon energy distribution $\\frac{d^2 W}{d E d\Omega}\$ received by the observer, expressed in the units of J/eV/sr.
    - `t` : Range of the observer time in seconds.
-   - `spectrum_t` : Spectral intensity $\\frac{d^2 I}{d t d\Omega}\$ corresponding to the observer time in the units of J/s/sr.
+   - `spectrum_t` : Spectral intensity $\\frac{d^2 W}{d t d\Omega}\$ corresponding to the observer time in the units of J/s/sr.
 
 In case `sum_spectra = True` ia specified by the user, another HDF5 file, `final_spectrum.h5`, is created, cointaining following groups:
    - `ene` : Energies of radiated photons in eV.
    - `spectrum_ene` : Photon energy distribution \(\frac{d^2 W}{d E d\Omega}\) received by the observer summed for all the particles, expressed in the units of J/eV/sr.
    - `t` : Range of the observer time in s.
-   - `spectrum_t` : Spectral intensity \(\frac{d^2 I}{d t d\Omega}\) summed for all the particles, corresponding to the observer time in the units of J/s/sr.
+   - `spectrum_t` : Spectral intensity \(\frac{d^2 W}{d t d\Omega}\) summed for all the particles, corresponding to the observer time in the units of J/s/sr.
 
 
 ## Smilei converter
@@ -157,13 +157,13 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
     - `omega_r_smilei_SI`
 
-        Specifies the reference angular frequency from your Smilei simulation in the SI units. When running Smilei simulations, all the Smilei units are derived from the reference angular frequency. Be aware that the parameter here requires the value of the reference frequency in the SI units! In the following example, the frequency is set to corresponding to 0.8 micron wavelength:
+        Specifies the reference angular frequency from your Smilei simulation in the SI units. When running Smilei simulations, other Smilei units are derived from the reference angular frequency $omega_r$. Be aware that the parameter here requires the value of the reference frequency in the SI units! In the following example, the frequency is set to 2354564459136066.5 rad/s corresponding to 0.8 micron wavelength:
 
         omega_r_smilei_SI = 2354564459136066.5
 
     - `dt_smilei_SI`
 
-        Specifies the PIC timestep used in your Smilei simulation (i.e. the timestep of the PIC loop). It is gain necessary to convert this value to the SI units! In the following example, timestep is equal to 8.539240837072692e-17 s:
+        Specifies the PIC timestep used in your Smilei simulation (i.e., the timestep of the PIC loop). It is necessary to convert this value to the SI units! In the following example, timestep is equal to 8.539240837072692e-17 s:
 
         dt_smilei_SI = 8.539240837072692e-17       
 
@@ -175,13 +175,13 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
     - `converted_file_name`
 
-        Indicates the full path for the output file .h5 where the data for radiation calculation in FIKA will be stored. Example:
+        Indicates the full path for the output .h5 file where the data for radiation calculation in FIKA will be stored. Example:
          
         converted_file_name = 'test_particle_set_1.h5'   
 
     - `print_every`
         
-        Progress update frequency. After a new set of `print_every` particles is processed, the update will be printed into a standard output. Example, where the update is printed after the data of each 100 new particles are converted:
+        Specifies the progress update frequency. After a new set of `print_every` particles is processed, the update will be printed into a standard output. Example, where the update is printed after the data of each 100 new particles are converted:
 
         print_every = 100
 
