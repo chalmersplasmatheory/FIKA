@@ -6,6 +6,7 @@
 # The position of the observer was chosen 1 m distance from the beam on the x-axis (in the positive direction).
 # It corresponds to r = 1, phi = 0, theta = pi/2.
 # E_slice_eV = 10 and t_slice_s = 1e-16 were chosen in the spectral summation.
+# The individual_spectra.h5 file are not shared on git, but were produced during the calculation.
 # For plotting, use python plot_spectra.py
 
 # Import necessary libraries for data handling and plotting
