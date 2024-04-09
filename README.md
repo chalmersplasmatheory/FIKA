@@ -185,6 +185,12 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
         print_every            = 100
 
+4. Run the converter using the following command:
+
+    ```bash
+    python run_converter.py
+    ```
+
 ### References
 [1]  J. Derouillat, A. Beck, F. Pérez, T. Vinci, M. Chiaramello, A. Grassi, M. Flé, G. Bouchard, I. Plotnikov, N. Aunai, J. Dargent, C. Riconda and M. Grech, SMILEI: a collaborative, open-source, multi-purpose particle-in-cell code for plasma simulation, Comput. Phys. Commun. 222, 351-373 (2018), arXiv:1702.05128
 
