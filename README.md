@@ -147,7 +147,7 @@ In case `sum_spectra = True` ia specified by the user, another HDF5 file, `final
 
 ## Smilei converter
 
-For users of the Smilei particle-in-cell code, an extra module which converts the Smilei output into a FIKA input file is available in the `smilei_converter` folder. To run the converter, follow these steps:
+For users of the Smilei particle-in-cell code [1], an extra module which converts the Smilei output into a FIKA input file is available in the `smilei_converter` folder. To run the converter, follow these steps:
 
 1. Navigate to the directory containing the FIKA code.
 
@@ -169,7 +169,7 @@ For users of the Smilei particle-in-cell code, an extra module which converts th
 
     - `smilei_file_to_convert/`
 
-        Indicates the full path to the Smilei .h5 file containing particle tracking data, including the file name. It has to be the file that is already sorted by postprocessing with happi library. This can be done in TrackParticles diagnostic by choosing `sort = True` in TrackParticles(..., sort=True, ...). See the Smilei documentation [2], "Open a TrackParticles diagnostic", for more information. Unsorted version cannot be processed! The file needs to contain the following information about the particles: `'x', 'y', 'z', 'px', 'py', 'pz', 'w', 'Times'`. Example for sorted track file with species "electron":
+        Indicates the full path to the Smilei .h5 file containing particle tracking data, including the file name. It has to be the file that is already sorted by postprocessing with happi library. This can be done in TrackParticles diagnostic by choosing `sort = True` in TrackParticles(..., sort=True, ...). See the Smilei documentation [2], "Open a TrackParticles diagnostic", for more information. Unsorted version cannot be processed! The file needs to contain the following information about the particles need to be tracked: `'x', 'y', 'z', 'px', 'py', 'pz', 'w'`. Example for a sorted track file with species "electron":
 
         smilei_file_to_convert = 'TrackParticles_electron.h5' 
 
@@ -185,9 +185,10 @@ For users of the Smilei particle-in-cell code, an extra module which converts th
 
         print_every            = 100
 
-[1] J. Derouillat, A. Beck, F. Pérez, T. Vinci, M. Chiaramello, A. Grassi, M. Flé, G. Bouchard, I. Plotnikov, N. Aunai, J. Dargent, C. Riconda and M. Grech, SMILEI: a collaborative, open-source, multi-purpose particle-in-cell code for plasma simulation, Comput. Phys. Commun. 222, 351-373 (2018), arXiv:1702.05128
+### References
+[1]  J. Derouillat, A. Beck, F. Pérez, T. Vinci, M. Chiaramello, A. Grassi, M. Flé, G. Bouchard, I. Plotnikov, N. Aunai, J. Dargent, C. Riconda and M. Grech, SMILEI: a collaborative, open-source, multi-purpose particle-in-cell code for plasma simulation, Comput. Phys. Commun. 222, 351-373 (2018), arXiv:1702.05128
 
-[2] https://smileipic.github.io/Smilei/Use/post-processing.html Accessed April 9, 2024.
+[2]  [Smilei documentation on post-processing](https://smileipic.github.io/Smilei/Use/post-processing.html) Accessed April 9, 2024.
 
 <!--
 ## Authors
