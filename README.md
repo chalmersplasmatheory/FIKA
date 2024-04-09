@@ -147,29 +147,29 @@ In case `sum_spectra = True` ia specified by the user, another HDF5 file, `final
 
 ## Smilei converter
 
-For users of the Smilei particle-in-cell code [1], an extra module which converts the Smilei output into a FIKA input file is available in the `smilei_converter` folder. To run the converter, follow these steps:
+For users of the Smilei particle-in-cell code [1], an extra module which converts the Smilei output into a FIKA input file is available in the `smilei_converter/` folder. To run the converter, follow these steps:
 
 1. Navigate to the directory containing the FIKA code.
 
-2. Navigate to `smilei_converter/`
+2. Navigate to `smilei_converter/` .
 
 3. Modify the parameters in `user_input_for_converter.py`. The following parameters need to be specified:
 
-    - `omega_r_smilei_SI/`
+    - `omega_r_smilei_SI`
 
         Specifies reference angular frequency from your Smilei simulation in the SI units. When running the Smilei simulations, all the Smilei units are derived from the reference angular frequency. Be aware that the parameter here requires the value of the reference frequency in the SI units! In the following example, the frequency is set to corresponding to 0.8 micron wavelength:
 
-        omega_r_smilei_SI      = 2354564459136066.5
+        omega_r_smilei_SI = 2354564459136066.5
 
-    - `dt_smilei_SI/`
+    - `dt_smilei_SI`
 
         Specifies the PIC timestep used in your Smilei simulation (i.e. the timestep of the PIC loop). It is gain necessary to convert this value to the SI units! In the following example, timestep is equal to 8.539240837072692e-17 s:
 
-        dt_smilei_SI           = 8.539240837072692e-17       
+        dt_smilei_SI = 8.539240837072692e-17       
 
     - `smilei_file_to_convert`
 
-        Indicates the full path to the Smilei .h5 file containing particle tracking data, including the file name. It has to be the file that is already sorted by postprocessing with happi library. This can be done in TrackParticles diagnostic by choosing `sort = True` in `TrackParticles(..., sort=True, ...)`. See the Smilei documentation [2], "Open a TrackParticles diagnostic", for more information. Unsorted version cannot be processed! The file needs to contain the following information about the particles need to be tracked: `'x', 'y', 'z', 'px', 'py', 'pz', 'w'`. Example for a sorted track file with species "electron":
+        Indicates the full path to the Smilei .h5 file containing particle tracking data, including the file name. It has to be the file that is already sorted by postprocessing with happi library. This can be done in TrackParticles diagnostic by choosing `sort = True` in `TrackParticles(..., sort = True, ...)`. See the Smilei documentation [2], "Open a TrackParticles diagnostic", for more information. Unsorted version cannot be processed! The file needs to contain the following information about the particles need to be tracked: `'x', 'y', 'z', 'px', 'py', 'pz', 'w'`. Example for a sorted track file with species "electron":
 
         smilei_file_to_convert = 'TrackParticles_electron.h5' 
 
@@ -177,13 +177,13 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
         Indicates the full path for the output file .h5 where the data for radiation calculation in FIKA will be stored. Example:
          
-        converted_file_name    = 'test_particle_set_1.h5'   
+        converted_file_name = 'test_particle_set_1.h5'   
 
     - `print_every`
         
         Progress update frequency. After a new set of `print_every` particles is processed, the update will be printed into a standard output. Example, where the update is printed after the data of each 100 new particles are converted:
 
-        print_every            = 100
+        print_every = 100
 
 4. Run the converter using the following command:
 
