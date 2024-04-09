@@ -159,31 +159,31 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
         Specifies the reference angular frequency from your Smilei simulation in the SI units. When running Smilei simulations, other Smilei units are derived from the reference angular frequency $\omega_r$. Be aware that the parameter here requires the value of the reference frequency in the SI units! In the following example, the frequency is set to 2354564459136066.5 rad/s corresponding to 0.8 micron wavelength:
 
-        omega_r_smilei_SI = 2354564459136066.5
+          omega_r_smilei_SI = 2354564459136066.5
 
     - `dt_smilei_SI`
 
         Specifies the PIC timestep used in your Smilei simulation (i.e., the timestep of the PIC loop). It is necessary to convert this value to the SI units! In the following example, timestep is equal to 8.539240837072692e-17 s:
 
-        dt_smilei_SI = 8.539240837072692e-17       
+          dt_smilei_SI = 8.539240837072692e-17       
 
     - `smilei_file_to_convert`
 
         Indicates the full path to the Smilei .h5 file containing particle tracking data, including the file name. It has to be the file that is already sorted by postprocessing with happi library. This can be done in TrackParticles diagnostic by choosing `sort = True` in `TrackParticles(..., sort = True, ...)`. See the Smilei documentation [2], "Open a TrackParticles diagnostic", for more information. The unsorted version cannot be processed! The following information about the particles need to be tracked: `'x', 'y', 'z', 'px', 'py', 'pz', 'w'`. Example for a sorted track file with species "electron":
 
-        smilei_file_to_convert = 'TrackParticles_electron.h5' 
+          smilei_file_to_convert = 'TrackParticles_electron.h5' 
 
     - `converted_file_name`
 
         Indicates the full path for the output .h5 file where the data for radiation calculation in FIKA will be stored. Example:
          
-        converted_file_name = 'test_particle_set_1.h5'   
+          converted_file_name = 'test_particle_set_1.h5'   
 
     - `print_every`
         
         Specifies the progress update frequency. After a new set of `print_every` particles is processed, the update will be printed into a standard output. Example, where the update is printed after the data of each 100 new particles are converted:
 
-        print_every = 100
+          print_every = 100
 
 4. Run the converter using the following command:
 
