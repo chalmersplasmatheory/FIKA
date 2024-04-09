@@ -181,7 +181,7 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
     - `print_every`
         
-        Progress update frequency. After a new set of "print_every" particles is processed, the update will be printed into a standard output. Example, where the update is printed after the data of each 100 new particles are converted:
+        Progress update frequency. After a new set of `print_every` particles is processed, the update will be printed into a standard output. Example, where the update is printed after the data of each 100 new particles are converted:
 
         print_every            = 100
 
