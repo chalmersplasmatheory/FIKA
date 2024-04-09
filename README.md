@@ -191,7 +191,7 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
     python run_converter.py
     ```
 
-### References
+## References
 [1]  J. Derouillat, A. Beck, F. Pérez, T. Vinci, M. Chiaramello, A. Grassi, M. Flé, G. Bouchard, I. Plotnikov, N. Aunai, J. Dargent, C. Riconda and M. Grech, SMILEI: a collaborative, open-source, multi-purpose particle-in-cell code for plasma simulation, Comput. Phys. Commun. 222, 351-373 (2018), arXiv:1702.05128
 
 [2]  [Smilei documentation on post-processing](https://smileipic.github.io/Smilei/Use/post-processing.html) Accessed April 9, 2024.
