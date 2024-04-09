@@ -109,19 +109,19 @@ To execute the FIKA simulation, follow these steps:
       
             Specifies the bin energy size in eV for the final output energy spectrum histogram. Example:
 
-            E_slice_eV = 2 
+              E_slice_eV = 2 
 
        - `t_slice_s`
       
             Specifies the bin time size in seconds for the final output of the radiation temporal profile. Example:
    
-            t_slice_s = 5e-18
+              t_slice_s = 5e-18
 
        -  `print_every_spectrum_sum` 
        
             Indicates how often information about the summation progress will be written to the standard output. The number specifies how many new particles have been summed at each update. Example:
 
-            print_every_spectrum_sum  = 200                                        
+              print_every_spectrum_sum  = 200                                        
 
 
 4. Run the simulation using the following command:
