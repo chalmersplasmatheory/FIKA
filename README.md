@@ -157,7 +157,7 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
 
     - `omega_r_smilei_SI`
 
-        Specifies reference angular frequency from your Smilei simulation in the SI units. When running the Smilei simulations, all the Smilei units are derived from the reference angular frequency. Be aware that the parameter here requires the value of the reference frequency in the SI units! In the following example, the frequency is set to corresponding to 0.8 micron wavelength:
+        Specifies the reference angular frequency from your Smilei simulation in the SI units. When running Smilei simulations, all the Smilei units are derived from the reference angular frequency. Be aware that the parameter here requires the value of the reference frequency in the SI units! In the following example, the frequency is set to corresponding to 0.8 micron wavelength:
 
         omega_r_smilei_SI = 2354564459136066.5
 
