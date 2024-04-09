@@ -95,7 +95,7 @@ def calculateFFTsquared(dt_inter, signal_inter):
   # Output only 1/2 the frequency spectrum, it is sufficient for real-valued signals because the FFT output is symmetric 
   return frequencies_whole_signal[:N // 2], np.square(np.abs(normalized_fft_whole_signal)[:N // 2])
 
-# Calculate spectral intensity dI/dE/dOmega in units J/eV/sr
+# Calculate spectral intensity dW/dE/dOmega in units J/eV/sr
 def calculate_spectrum(fft_squared):
   # c * epsilon_0 / pi comes from the radiation formula
   # hbar / e is for transforming frequency to eV
@@ -105,7 +105,7 @@ def calculate_spectrum(fft_squared):
   return Iconst * fft_squared * 2
 
 # Write individual particle spectra to an .h5 file
-def write_spectra_to_file(output_folder, id, freq, dI_dE_dOmega, t, R0, dI_dt_dOmega, weights, weight):
+def write_spectra_to_file(output_folder, id, freq, dW_dE_dOmega, t, R0, dW_dt_dOmega, weights, weight):
 
   # Convert frequencies to eV energies for the output  
   freq_to_eV = 2 * pi * hbar / e 
@@ -115,17 +115,17 @@ def write_spectra_to_file(output_folder, id, freq, dI_dE_dOmega, t, R0, dI_dt_dO
   if weights ==True:
     processed_data = {
       "ene": ene,  
-      "spectrum_ene": dI_dE_dOmega,
+      "spectrum_ene": dW_dE_dOmega,
       "t": t-R0/c,
-      "spectrum_t": dI_dt_dOmega,
+      "spectrum_t": dW_dt_dOmega,
       "weight":weight,
     }   
   else:
     processed_data = {
       "ene": ene,  
-      "spectrum_ene": dI_dE_dOmega,
+      "spectrum_ene": dW_dE_dOmega,
       "t": t-R0/c,
-      "spectrum_t": dI_dt_dOmega,
+      "spectrum_t": dW_dt_dOmega,
     }  
     
   # Save the processed data under a group named after the particle ID
@@ -299,19 +299,19 @@ def calculate_spectrum_one_particle(charge,E_radMax_eV, r, phi, theta, input_fil
       signal_inter_y      = np.interp(t_inter, t, signal_y)
       signal_inter_z      = np.interp(t_inter, t, signal_z)
       signal_squared      = np.square(signal_x) + np.square(signal_y) + np.square(signal_z)      
-      dI_dt_dOmega        = c * epsilon_0 * signal_squared 
+      dW_dt_dOmega        = c * epsilon_0 * signal_squared 
       dt_inter            = calculate_dtime(t_inter)
       freq, fft_squared_x = calculateFFTsquared(dt_inter, signal_inter_x)
       freq, fft_squared_y = calculateFFTsquared(dt_inter, signal_inter_y)
       freq, fft_squared_z = calculateFFTsquared(dt_inter, signal_inter_z)
       fft_squared         = fft_squared_x + fft_squared_y + fft_squared_z
-      dI_dE_dOmega        = calculate_spectrum(fft_squared) 
+      dW_dE_dOmega        = calculate_spectrum(fft_squared) 
 
       # Save the calculated spectra for the particle to an HDF5 file
       if weights == True:
-        write_spectra_to_file(output_folder, id, freq, dI_dE_dOmega, t, R0, dI_dt_dOmega, weights, weight)
+        write_spectra_to_file(output_folder, id, freq, dW_dE_dOmega, t, R0, dW_dt_dOmega, weights, weight)
       else:
-        write_spectra_to_file(output_folder, id, freq, dI_dE_dOmega, t, R0, dI_dt_dOmega, weights, False)
+        write_spectra_to_file(output_folder, id, freq, dW_dE_dOmega, t, R0, dW_dt_dOmega, weights, False)
 
       # Print progress at regular intervals
       print_calculation_progress(curr_num_par, print_every_par_spectrum)
