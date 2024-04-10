@@ -4,6 +4,7 @@ import numpy as np
 from scipy.constants import c, epsilon_0, hbar, e
 import h5py
 import os
+from scipy.interpolate import interp1d, PchipInterpolator
 
 # Calculate the time step based on an array of time values
 def calculate_dtime(time):
@@ -176,7 +177,6 @@ def get_ene_range(E_slice_eV, file_to_sum):
       max_ene = current_max_ene
     ene_id_index += 1   
 
-
   # The upper requency is determined as max from all the particles 
   num_ene       = int(round(max_ene/E_slice_eV))
   ene_range     = np.linspace(0, max_ene, num = num_ene)
@@ -196,41 +196,34 @@ def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_ev
     fin_spec_ene   = np.zeros(np.size(ene_range))
     fin_spec_t     = np.zeros(np.size(time_range))
 
+    curr_num_par_sum = 0  # Counter for processed particles
+
     for id in file_to_sum.keys():
-      dataset          = file_to_sum[id]
-      current_ene      = np.array(dataset['ene'][:])
-      current_spec_ene = np.array(dataset['spectrum_ene'][:])
-      current_t        = np.array(dataset['t'][:])
-      current_spec_t   = np.array(dataset['spectrum_t'][:])
-      if weights:
-        current_weight = np.array(dataset['weight'][0])
+            dataset = file_to_sum[id]
+            current_ene = np.array(dataset['ene'][:])
+            current_spec_ene = np.array(dataset['spectrum_ene'][:])
+            current_t = np.array(dataset['t'][:])
+            current_spec_t = np.array(dataset['spectrum_t'][:])
+            
+            if weights:
+                current_weight = np.array(dataset['weight'][0])
+            else:
+                current_weight = 1
 
-      # Sum the spectral data, accounting for the weight of each particle if applicable
-      # Each particle has a different energy sampling
-      # The intensity value is assigned to the closest energy value of the final spectrum sampling
-      for f_num in range(0, len(current_ene)):
-        index_of_closest_ene = (np.abs(ene_range - current_ene[f_num])).argmin()
-        # If weights are included, spectrum from each macroparticle is multiplied by the real number of particles
-        if weights == True:
-          current_spec_to_sum = current_spec_ene[f_num] * current_weight
-        else:
-          current_spec_to_sum = current_spec_ene[f_num]            
-        fin_spec_ene[index_of_closest_ene] += current_spec_to_sum
+            # Set up spline interpolators for energy and time 
+            # Omitting 'fill_value' argument defaults to NaN for out-of-bounds points
+            spline_ene = interp1d(current_ene, current_spec_ene * current_weight, kind='cubic', bounds_error=False, fill_value=0)
+            spline_t = interp1d(current_t, current_spec_t * current_weight, kind='cubic', bounds_error=False, fill_value=0)
 
-      # Sum the spectral data for observer time signal, similarly to the energy above
-      for t_num in range(0, len(current_t)):
-        index_of_closest_t              = (np.abs(time_range - current_t[t_num])).argmin()
-        if weights == True:
-          current_spec_t_to_sum = current_spec_t[t_num] * current_weight
-        else:
-          current_spec_t_to_sum = current_spec_t[t_num]            
-        fin_spec_t[index_of_closest_t] += current_spec_t_to_sum
-      
-      # Print progress at intervals  
-      if curr_num_par_sum % print_every_spectrum_sum == 0 and curr_num_par_sum != 0:
-        print('Spectrum from ' + str(curr_num_par_sum)+' particles is already summed.')
-      curr_num_par_sum += 1
-  return ene_range, fin_spec_ene, time_range, fin_spec_t
+            fin_spec_ene += spline_ene(ene_range)
+            fin_spec_t   += spline_t(time_range)
+
+            curr_num_par_sum += 1
+            if curr_num_par_sum % print_every_spectrum_sum == 0:
+                print(f'Spectrum from {curr_num_par_sum} particles is already summed.')
+
+    return ene_range, fin_spec_ene, time_range, fin_spec_t
+
 
 # For writing the summation of all particle spectra into the final output file
 # Saves the aggregated spectra and temporal profiles to a final HDF5 file
