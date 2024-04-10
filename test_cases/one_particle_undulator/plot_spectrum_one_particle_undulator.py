@@ -48,10 +48,10 @@ plt.tight_layout()
 plt.savefig('test_cases/one_particle_undulator/energy_spectrum.png')
 
 # Calculate expected outcome with analytical formula and compare it with the code outcome.
-K       = 1.33e-10 * sqrt(gamma*n_e) * r_beta
+K       = 1.33e-10 * sqrt(gamma*n_e/1e6) * r_beta/1e-6
 omega_1 = 2 * gamma**2 * omega_beta/ (1 + K**2 / 2)
 max_s   = np.argmax(spectrum_ene)
-print('Expected fundamental frequency according to formula 2*gamma^2*omega_beta/(1+K^2/2), where K = 1.33*10^-10*r_beta*(gamma*n_e)^0.5 is ' + str(round(omega_1*hbar/e,1))+ 'eV.')
+print('Expected fundamental frequency according to formula 2*gamma^2*omega_beta/(1+K^2/2), where K = 1.33*10^-10*r_beta*(gamma*n_e)^0.5 is ' + str(round(omega_1*hbar/e,1))+ ' eV.')
 print('The fundamental frequency in the spectrum calculated by FIKA is ' +str(round(ene[max_s],1))+' eV.')
 
 plt.show()
