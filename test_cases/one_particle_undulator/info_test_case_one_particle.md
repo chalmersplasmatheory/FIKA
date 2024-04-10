@@ -3,9 +3,11 @@ Script `get_trajectory_one_particle_undulator.py` generates a HDF file with the 
 $$
 \omega_1 = \frac{2 \gamma^2 \omega_\beta}{1+K^2/2} = 10.2~\rm{eV},
 $$
+
 where the undulator parameter can be calculated as
+
 $$
-1.33 \times 10^{-10} \sqrt{\gamma n_e} r_{\beta}.
+K = 1.33 \times 10^{-10} \sqrt{\gamma n_e} r_{\beta}.
 $$
 
 Similar example can be found in the dissertation of Vojtěch Horný, CTU in Prague, Czech Republic, 2018.
