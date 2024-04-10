@@ -16,6 +16,7 @@ n_e        = 5e24                                # plasma electron background de
 omega_p    = sqrt(e * e * n_e/(m_e * epsilon_0)) # plasma electron frequency
 omega_beta = omega_p / sqrt(2 * gamma)           # betatron frequency
 
+# Calculate trajectory and corresponding velocities
 y          = r_beta * sin(omega_beta * t_ret)    # y positions of the electron
 vy         = np.zeros(np.size(y))                # prealocate y velocity of electrons
 
