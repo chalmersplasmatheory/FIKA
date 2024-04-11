@@ -11,3 +11,5 @@ K = 1.33 \times 10^{-10} \sqrt{\gamma n_e [\rm{cm}^{-3}]} r_{\beta} [\rm{\upmu m
 $$
 
 Similar example can be found in the dissertation of Vojtěch Horný, CTU in Prague, Czech Republic, 2018.
+
+Note that the spectrum summation of one particle to generate file `final_spectrum.h5` was not necessary here, as the information was already obtained in `individual_spectra.h5`, but it was generated for testing purposes.
