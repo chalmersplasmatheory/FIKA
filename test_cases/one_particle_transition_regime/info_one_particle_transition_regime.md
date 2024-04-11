@@ -10,4 +10,4 @@ $$
 K = 1.33 \times 10^{-10} \sqrt{\gamma n_e [\rm{cm}^{-3}] } r_{\beta} [\rm{\upmu m}].
 $$
 
-The on-axis spectrum is expected to have peaks in the fundamental frequency $\omega_1\approx 26$ eV and several odd harmonics. After FIKA calculation, final data can be plotted with `plot_spectrum_one_particle_transition_regime.py`. This example can be compared with the results in Horný, V., et al. <em>Physics of Plasmas</em> 24.6 (2017).
+The on-axis spectrum is expected to have peaks in the fundamental frequency $\omega_1\approx 26$ eV and several odd harmonics. After FIKA calculation, final data can be plotted with `plot_spectrum_one_particle_transition_regime.py`. This example can be compared with the results in Horný, V., et al. <em>Physics of Plasmas</em> 24.6 (2017): 063107.
