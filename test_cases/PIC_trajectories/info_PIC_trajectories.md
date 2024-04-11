@@ -5,4 +5,3 @@ The macroparticle spectra (`PIC_macroparticle_weights = False` option in `input.
 Real-particle spectrum (`PIC_macroparticle_weights = True` option in `input.py`) can be found in the `with_macroparticle_weights/final_spectrum.h5`.
 Both cases can be plotted with `plot_spectrum_PIC_trajectories.py` for comparison.
 
-The options in the input file were as follows: The position of the observer was chosen 1 m distance from the beam on the x-axis (in the positive direction). It corresponds to r = 1, phi = 0, theta = pi/2. E_slice_eV = 10 and t_slice_s = 1e-16 were chosen in the spectral summation.
