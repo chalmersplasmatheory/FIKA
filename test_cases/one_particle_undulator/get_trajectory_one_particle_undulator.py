@@ -54,4 +54,4 @@ with h5py.File('test_cases/one_particle_undulator/particle_trajectory.h5', 'w') 
             grp.create_dataset(key, data=values)
 
 # Print status when all done
-print("HDF5 file 'particle_trajectories.h5' created successfully.")
+print("HDF5 file 'particle_trajectory.h5' created successfully.")
