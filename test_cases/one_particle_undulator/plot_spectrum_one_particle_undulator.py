@@ -10,10 +10,10 @@ with h5py.File('test_cases/one_particle_undulator/final_spectrum.h5', 'r') as fi
     signal_time  = np.array(file['t'])
     spectrum_t   = np.array(file['spectrum_t'])
 
-# Plot temporal profile in the observer place. Parameters r = 1, phi = 0, theta = pi/2 were used in input.py.
+# Plot temporal profile at the observer position. Parameters r = 1, phi = 0, theta = pi/2 were used in input.py.
 # Other parameters used were E_slice_eV = 0.01, t_slice_s = 1e-18, E_radMax_eV = 20.
 fig, ax = plt.subplots()
-# Write important into into the title
+# Write important info into the title
 plt.title(r'$E_{e} = $10 MeV, $r_{\beta}$ = 0.05 $\rm{\mu m}$', fontsize=14)
 # Plot temporal profile, time is in the units of fs
 plt.plot(signal_time / 1e-15, spectrum_t)
