@@ -215,7 +215,12 @@ def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_ev
             spline_ene = interp1d(current_ene, current_spec_ene * current_weight, kind='cubic', bounds_error=False, fill_value=0)
             spline_t = interp1d(current_t, current_spec_t * current_weight, kind='cubic', bounds_error=False, fill_value=0)
 
-            fin_spec_ene += spline_ene(ene_range)
+            # If some intensity values after interpolation oscillate below zero, put them = 0
+            interpolated_values_ene                              = spline_ene(ene_range)
+            interpolated_values_ene[interpolated_values_ene < 0] = 0
+
+            # Add the individual particle spectrum to the total final spectrum
+            fin_spec_ene += interpolated_values_ene
             fin_spec_t   += spline_t(time_range)
 
             curr_num_par_sum += 1
