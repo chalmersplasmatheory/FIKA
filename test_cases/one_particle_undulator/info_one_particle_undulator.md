@@ -7,7 +7,7 @@ $$
 where the undulator parameter can be calculated as
 
 $$
-K = 1.33 \times 10^{-10} \sqrt{\gamma n_e} r_{\beta}.
+K = 1.33 \times 10^{-10} \sqrt{\gamma n_e\rm{cm}^{-3}} r_{\beta}\rm{\upmu m}.
 $$
 
 Similar example can be found in the dissertation of Vojtěch Horný, CTU in Prague, Czech Republic, 2018.
