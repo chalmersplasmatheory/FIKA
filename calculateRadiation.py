@@ -75,14 +75,9 @@ def calculate_E(charge,R,n,beta,beta_dot):
   E_z         = Econst * numerator[2, :] / denominator
   return E_x, E_y, E_z 
 
-# Determine the number of frequency steps from the maximum photon energy given by a user
-# This function calculates the sampling frequency necessary to resolve the spectrum up to a maximum energy defined by the user
-def calculate_number_frequency_steps(t, E_radMax_eV):
-  E_radMax      = E_radMax_eV * e        # Convert energy from eV to Joules
-  omega_rad_max = E_radMax / hbar        # Convert energy to angular frequency
-  freq_rad_max  = omega_rad_max / 2 / pi # Convert angular frequency to frequency
-  t_inter       = 1/ (20 * freq_rad_max) # Define time interval for 20 samples per period of the highest frequency
-  Nt            = int(round((max(t)-min(t))/t_inter))
+# Determine the number of frequency steps from the interpolation timestep
+def calculate_number_frequency_steps(t, dt_inter):
+  Nt            = int(round((max(t)-min(t))/dt_inter))
   return Nt
 
 # Perform Fast Fourier Transform on a signal and return squared magnitude of its frequency components and corresponding frequencies
@@ -248,7 +243,7 @@ def remove_existing_file(file_path):
     print('File ' + str(file_path) + ' already existed. The old file was removed.')
 
 # Main function for radiation calculation
-def calculate_spectrum_one_particle(charge,E_radMax_eV, r, phi, theta, input_file, output_folder, weights, print_every_par_spectrum):
+def calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_folder, weights, print_every_par_spectrum):
 
   # If the file spectra.h5 exists in the folder, remove it to avoid clash
   remove_existing_file(output_folder +'individual_spectra.h5')
@@ -281,6 +276,7 @@ def calculate_spectrum_one_particle(charge,E_radMax_eV, r, phi, theta, input_fil
       # Perform a series of calculations to determine the radiation characteristics of the particle
       dt_ret              = calculate_dtime(t_ret)
       beta                = calculate_beta(vx, vy, vz)
+      gamma               = 1/sqrt(1-beta[0]*beta[0]-beta[1]*beta[1]-beta[2]*beta[2])
       beta_dot            = calculate_beta_dot(beta, dt_ret )
       pos_vec             = calculate_pos_vec(r, phi, theta)  
       R0                  = calculate_R0(pos_vec)
@@ -291,14 +287,19 @@ def calculate_spectrum_one_particle(charge,E_radMax_eV, r, phi, theta, input_fil
       signal_x            = R * E_x
       signal_y            = R * E_y
       signal_z            = R * E_z
-      Nt                  = calculate_number_frequency_steps(t, E_radMax_eV)
+
+      # Interpolate the time signal to a better resolution
+      # The timestep is given by the particle energy and original timestep
+      # This captures the highest frequencies
+      # Difference between dt_inter and dt_ret is minimized for proper interpolation 
+      dt_inter            = 0.5 * dt_ret/ max(gamma)**2
+      Nt                  = calculate_number_frequency_steps(t, dt_inter)
       t_inter             = np.linspace(min(t),max(t),Nt)
       signal_inter_x      = np.interp(t_inter, t, signal_x)
       signal_inter_y      = np.interp(t_inter, t, signal_y)
       signal_inter_z      = np.interp(t_inter, t, signal_z)
       signal_squared      = np.square(signal_x) + np.square(signal_y) + np.square(signal_z)      
       dW_dt_dOmega        = c * epsilon_0 * signal_squared 
-      dt_inter            = calculate_dtime(t_inter)
       freq, fft_squared_x = calculateFFTsquared(dt_inter, signal_inter_x)
       freq, fft_squared_y = calculateFFTsquared(dt_inter, signal_inter_y)
       freq, fft_squared_z = calculateFFTsquared(dt_inter, signal_inter_z)
