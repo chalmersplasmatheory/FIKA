@@ -62,13 +62,6 @@ To execute the FIKA simulation, follow these steps:
             from scipy.constants import e
             charge = -e  
       
-      
-    - `E_radMax_eV`
-    
-         Defines the maximum radiation energy expected, in units of eV. The Fourier transformation sampling will be 20 times this value. The actual maximum energy must be higher than twice this value for accurate sampling. If the user discovers that the highest photon energy exceeds this value, it is recommended to rerun the code with an increased `E_radMax_eV`. Example: 
-    
-          E_radMax_eV = 1000 
-   
     - `r`
 
        Specifies the radial position in spherical coordinates (in meters), indicating the observer's position. Example:
