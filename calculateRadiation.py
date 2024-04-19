@@ -4,7 +4,9 @@ import numpy as np
 from scipy.constants import c, epsilon_0, hbar, e
 import h5py
 import os
-from scipy.interpolate import interp1d, PchipInterpolator
+from scipy.interpolate import interp1d, PchipInterpolator, Akima1DInterpolator, pchip_interpolate
+from scipy.ndimage import gaussian_filter1d
+import matplotlib.pyplot as plt
 
 # Calculate the time step based on an array of time values
 def calculate_dtime(time):
@@ -177,6 +179,9 @@ def get_ene_range(E_slice_eV, file_to_sum):
   ene_range     = np.linspace(0, max_ene, num = num_ene)
   return ene_range  
 
+
+
+
 # Read, sum, and optionally PIC-weight spectra from all the particles
 def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_every_spectrum_sum):
   # Store number of particles processed to print
@@ -207,24 +212,93 @@ def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_ev
 
             # Set up spline interpolators for energy and time 
             # Omitting 'fill_value' argument defaults to NaN for out-of-bounds points
-            spline_ene = interp1d(current_ene, current_spec_ene * current_weight, kind='cubic', bounds_error=False, fill_value=0)
-            spline_t = interp1d(current_t, current_spec_t * current_weight, kind='cubic', bounds_error=False, fill_value=0)
+            spline_ene = interp1d(current_ene, current_spec_ene * current_weight, kind='linear', bounds_error=False, fill_value=0)
+            spline_t = interp1d(current_t, current_spec_t * current_weight, kind='linear', bounds_error=False, fill_value=0)
 
-            # If some intensity values after interpolation oscillate below zero, put them = 0
-            interpolated_values_ene                              = spline_ene(ene_range)
-            interpolated_values_ene[interpolated_values_ene < 0] = 0
+   #         x_observed = np.linspace(0.0, 10.0, 11)
+  #          y_observed = np.sin(x_observed)
+
+
+ #           spline_ene = pchip_interpolate(current_ene, current_spec_ene * current_weight, ene_range)
+#            spline_t = pchip_interpolate(current_t, current_spec_t * current_weight, time_range)
+
+            # Apply Gaussian smoothing
+         #   smoothed_spec_ene = gaussian_filter1d(current_spec_ene * current_weight, sigma=2)
+         #   smoothed_spec_t = gaussian_filter1d(current_spec_t * current_weight, sigma=2)
+            
+            # Create Akima interpolators with the smoothed data
+        #    akima_ene = Akima1DInterpolator(current_ene, smoothed_spec_ene)
+      #      akima_t = Akima1DInterpolator(current_t, smoothed_spec_t)
+            
+            # Perform interpolation and sum
+       #     fin_spec_ene += akima_ene(ene_range)
+        #    fin_spec_t += akima_t(time_range)
+
+
+   #         # If some intensity values after interpolation oscillate below zero, put them = 0
+    #        interpolated_values_ene                              = spline_ene(ene_range)
+     #       interpolated_values_ene[interpolated_values_ene < 0] = 0
 
             # Add the individual particle spectrum to the total final spectrum
-            fin_spec_ene += interpolated_values_ene
+            fin_spec_ene +=  spline_ene(ene_range)# interpolated_values_ene
             fin_spec_t   += spline_t(time_range)
-
             curr_num_par_sum += 1
             if curr_num_par_sum % print_every_spectrum_sum == 0:
                 print(f'Spectrum from {curr_num_par_sum} particles is already summed.')
-
+                plt.plot(ene_range,spline_ene(ene_range))
+                plt.plot(time_range,spline_t(time_range))
     return ene_range, fin_spec_ene, time_range, fin_spec_t
+'''
+def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_every_spectrum_sum):
+  # Store number of particles processed to print
+  curr_num_par_sum = 0 
 
+  with h5py.File(output_folder + 'individual_spectra.h5', 'r') as file_to_sum:
+    # Get the energy range of the whole spectrum from the user input 
+    ene_range    = get_ene_range(E_slice_eV, file_to_sum)
+    time_range    = get_time_range(t_slice_s, file_to_sum)
 
+    fin_spec_ene   = np.zeros(np.size(ene_range))
+    fin_spec_t     = np.zeros(np.size(time_range))
+
+    curr_num_par_sum = 0  # Counter for processed particles
+
+    for id in file_to_sum.keys():
+      dataset          = file_to_sum[id]
+      current_ene      = np.array(dataset['ene'][:])
+      current_spec_ene = np.array(dataset['spectrum_ene'][:])
+      current_t        = np.array(dataset['t'][:])
+      current_spec_t   = np.array(dataset['spectrum_t'][:])
+      if weights:
+        current_weight = np.array(dataset['weight'][0])
+
+      # Sum the spectral data, accounting for the weight of each particle if applicable
+      # Each particle has a different energy sampling
+      # The intensity value is assigned to the closest energy value of the final spectrum sampling
+      for f_num in range(0, len(current_ene)):
+        index_of_closest_ene = (np.abs(ene_range - current_ene[f_num])).argmin()
+        # If weights are included, spectrum from each macroparticle is multiplied by the real number of particles
+        if weights == True:
+          current_spec_to_sum = current_spec_ene[f_num] * current_weight
+        else:
+          current_spec_to_sum = current_spec_ene[f_num]            
+        fin_spec_ene[index_of_closest_ene] += current_spec_to_sum
+
+      # Sum the spectral data for observer time signal, similarly to the energy above
+      for t_num in range(0, len(current_t)):
+        index_of_closest_t              = (np.abs(time_range - current_t[t_num])).argmin()
+        if weights == True:
+          current_spec_t_to_sum = current_spec_t[t_num] * current_weight
+        else:
+          current_spec_t_to_sum = current_spec_t[t_num]            
+        fin_spec_t[index_of_closest_t] += current_spec_t_to_sum
+
+      # Print progress at intervals  
+      if curr_num_par_sum % print_every_spectrum_sum == 0 and curr_num_par_sum != 0:
+        print('Spectrum from ' + str(curr_num_par_sum)+' particles is already summed.')
+      curr_num_par_sum += 1
+  return ene_range, fin_spec_ene, time_range, fin_spec_t
+'''
 # For writing the summation of all particle spectra into the final output file
 # Saves the aggregated spectra and temporal profiles to a final HDF5 file
 def write_final_spectrum_to_file(output_folder, time_range, fin_spec_t, ene_range, fin_spec_ene):
@@ -291,8 +365,9 @@ def calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_fo
       # Interpolate the time signal to a better resolution
       # The timestep is given by the particle energy and original timestep
       # This captures the highest frequencies
-      # Difference between dt_inter and dt_ret is minimized for proper interpolation 
+      # Also, the difference between dt_inter and dt_ret is minimized for proper interpolation 
       dt_inter            = 0.5 * dt_ret/ max(gamma)**2
+  #    dt_inter =1e-18
       Nt                  = calculate_number_frequency_steps(t, dt_inter)
       t_inter             = np.linspace(min(t),max(t),Nt)
       signal_inter_x      = np.interp(t_inter, t, signal_x)
@@ -322,3 +397,4 @@ def calculate_spectrum_all_particles(output_folder, E_slice_eV, t_slice_s, weigh
   ene_range, fin_spec_ene, time_range, fin_spec_t = read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_every_spectrum_sum)
   remove_existing_file(output_folder + 'final_spectrum.h5')
   write_final_spectrum_to_file(output_folder, time_range, fin_spec_t, ene_range, fin_spec_ene)
+  plt.show()
