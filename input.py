@@ -3,6 +3,7 @@
 # Import constants from Python libraries
 from numpy import pi 
 from scipy.constants import e
+import os
 
 input_file                = 'test_cases/PIC_trajectories/test_particle_set.h5' # Input file
 output_folder             = 'test_cases/PIC_trajectories/no_weights_parallel/' # Output folder, include / at the end  
