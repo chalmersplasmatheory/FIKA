@@ -1,4 +1,4 @@
-# Import necessary libraries
+# Import necessary library
 from numpy import pi, sin, cos, sqrt
 import numpy as np
 from scipy.constants import c, epsilon_0, hbar, e
