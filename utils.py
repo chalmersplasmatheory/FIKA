@@ -1,4 +1,4 @@
-# Import necessary library
+# Import necessary libraries
 from numpy import pi, sin, cos, sqrt
 import numpy as np
 from scipy.constants import c, epsilon_0, hbar, e
@@ -93,15 +93,14 @@ def calculate_number_frequency_steps(t, dt_inter):
   return Nt
 
 # Perform Fast Fourier Transform on a signal and return squared magnitude of its frequency components and corresponding frequencies
-def calculateFFTsquared(dt_inter, signal_inter):
+def calculateFFTsquared(dt_inter, signal_inter, padding_factor):
   N                           = len(signal_inter) # Number of points in the signal
-  fft_output                  = np.fft.fft(signal_inter)
-  frequencies_whole_signal    = np.fft.fftfreq(N, dt_inter)
+  fft_output                  = np.fft.fft(signal_inter, n=N*padding_factor)
+  frequencies_whole_signal    = np.fft.fftfreq(N*padding_factor, dt_inter)
   # Normalize FFT output to make its amplitude independent of the number of points
-  normalized_fft_whole_signal = fft_output / N
+  normalized_fft_whole_signal = fft_output * dt_inter
   # Return the first half of the frequency spectrum and squared magnitude (for power spectrum)
-  # Output only 1/2 the frequency spectrum, it is sufficient for real-valued signals because the FFT output is symmetric 
-  return frequencies_whole_signal[:N // 2], np.square(np.abs(normalized_fft_whole_signal)[:N // 2])
+  return frequencies_whole_signal, np.square(np.abs(normalized_fft_whole_signal))
 
 # Calculate spectral intensity dW/dE/dOmega in units J/eV/sr
 def calculate_spectrum(fft_squared):
@@ -109,7 +108,7 @@ def calculate_spectrum(fft_squared):
   Wconst = (c * epsilon_0 / pi)
   # Apply Parseval's theorem to ensure energy conservation in FFT, ...
   # ... doubling the intensity to account for only using half the spectrum
-  return Wconst * fft_squared * 2
+  return Wconst * fft_squared
 
 # Determine the time range for the summation of all the spectra
 # This function finds the overall time interval across all particles to aggregate the spectra consistently

@@ -56,7 +56,7 @@ if __name__ == "__main__":
   # Run the simulation  
   if parallel == False:
     from calculate_radiation_serial import calculate_spectrum_one_particle, calculate_spectrum_all_particles
-    particles_total, particles_skipped = calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_folder, PIC_macroparticle_weights, print_every_par_spectrum)
+    particles_total, particles_skipped = calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_folder, PIC_macroparticle_weights, print_every_par_spectrum, zero_padding_res_factor)
     particles_calculated               = int(particles_total) - int(particles_skipped)
     print('Calculation of the spectra of individual particles is finished.')
     print(str(particles_skipped)+ ' particles of the original number ' +str(particles_total)+ ' were skipped in the calculation.')

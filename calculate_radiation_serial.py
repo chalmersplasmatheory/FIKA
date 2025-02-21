@@ -79,7 +79,7 @@ def read_and_sum_spectra(output_folder, E_slice_eV, t_slice_s, weights, print_ev
     return ene_range, fin_spec_ene, time_range, fin_spec_t
 
 # Main function for radiation calculation
-def calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_folder, weights, print_every_par_spectrum):
+def calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_folder, weights, print_every_par_spectrum, res_factor):
   # If the file spectra.h5 exists in the folder, remove it to avoid clash
   remove_existing_file(output_folder +'individual_spectra.h5')
 
@@ -149,7 +149,7 @@ def calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_fo
       # The timestep is given by the particle energy and original timestep
       # This captures the highest photon frequencies
       # See for instance M. Pardal et al.,Computer Physics Communications, 285, 2023, 108634 for explanation
-      dt_inter            = 0.5 * dt_ret / max(gamma)**2
+      dt_inter            = 0.5 * dt_ret / max(gamma)**2 * res_factor
       
       Nt                  = calculate_number_frequency_steps(t, dt_inter)
       t_inter             = np.linspace(min(t), max(t), Nt)
@@ -158,9 +158,9 @@ def calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_fo
       signal_inter_z      = np.interp(t_inter, t, signal_z)
       signal_squared      = np.square(signal_x) + np.square(signal_y) + np.square(signal_z)      
       dW_dt_dOmega        = c * epsilon_0 * signal_squared 
-      freq, fft_squared_x = calculateFFTsquared(dt_inter, signal_inter_x)
-      freq, fft_squared_y = calculateFFTsquared(dt_inter, signal_inter_y)
-      freq, fft_squared_z = calculateFFTsquared(dt_inter, signal_inter_z)
+      freq, fft_squared_x = calculateFFTsquared(dt_inter, signal_inter_x, int(1/res_factor))
+      freq, fft_squared_y = calculateFFTsquared(dt_inter, signal_inter_y, int(1/res_factor))
+      freq, fft_squared_z = calculateFFTsquared(dt_inter, signal_inter_z, int(1/res_factor))
       fft_squared         = fft_squared_x + fft_squared_y + fft_squared_z
       dW_dE_dOmega        = calculate_spectrum(fft_squared) 
 
