@@ -4,6 +4,10 @@ from numpy import sin, sqrt, cos
 from scipy.integrate import cumulative_trapezoid
 from scipy.constants import c, m_e, epsilon_0, e, hbar
 import h5py
+import os
+
+# Create a string representing the closest common directory
+base_folder = os.path.dirname(os.path.abspath(__file__))
 
 # Indicate parameters for the trajectory calculation
 dt_ret   = 0.01e-15                                       # timestep
@@ -46,7 +50,7 @@ data = {
 }
 
 # Write the dataset for one particle into a .h5 file
-with h5py.File('test_cases/two_particles/one/particle_trajectory.h5', 'w') as f:
+with h5py.File(base_folder + '/one/particle_trajectory.h5', 'w') as f:
     for id, arrays in data.items():
         grp = f.create_group(str(id))
         for key, values in arrays.items():
@@ -78,7 +82,7 @@ data = {
 }
 
 # Write the dataset for two particles into a .h5 file
-with h5py.File('test_cases/two_particles/two/particle_trajectories.h5', 'w') as f:
+with h5py.File(base_folder + '/two/particle_trajectories.h5', 'w') as f:
     for id, arrays in data.items():
         grp = f.create_group(str(id))
         for key, values in arrays.items():

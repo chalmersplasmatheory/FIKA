@@ -7,19 +7,21 @@ from scipy.interpolate import interp1d
 import pandas as pd
 def round_to_odd(f):
   return int(np.ceil(f) // 2 * 2 + 1)
+ 
+ import os
 
-# Folder fit the FIKA output
-folder     = 'test_cases/two_particles/'
+# Create a string representing the closest common directory
+base_folder = os.path.dirname(os.path.abspath(__file__))
 
 # Read spectrum for one particle
-with h5py.File(folder + 'one/final_spectrum.h5', 'r') as file:
+with h5py.File(base_folder + '/one/final_spectrum.h5', 'r') as file:
     ene_1        = np.array(file['ene'])/hbar*e
     spectrum_1   = np.array(file['spectrum_ene'])/(hbar/e)
     t_1          = np.array(file['t'])
     spectrum_t_1 = np.array(file['spectrum_t'])
 
 # Read spectrum for two indentical particles
-with h5py.File(folder + 'two/final_spectrum.h5', 'r') as file:
+with h5py.File(base_folder + '/two/final_spectrum.h5', 'r') as file:
     ene_2        = np.array(file['ene'])
     spectrum_2   = np.array(file['spectrum_ene'])
     t_2          = np.array(file['t'])
@@ -40,7 +42,7 @@ plt.legend(frameon = False, fontsize = 14)
 # Fit the figure to the box
 plt.tight_layout()
 # Save the figure
-plt.savefig('test_cases/two_particles/energy_spectrum.png')
+plt.savefig(base_folder + '/energy_spectrum.png')
 
 
 # Window size
@@ -61,7 +63,7 @@ cumulative_spectrum = np.cumsum(moving_average)
 halfway_point       = cumulative_spectrum[-1] / 2 /1.54  
 index_halfway       = np.searchsorted(cumulative_spectrum, halfway_point)
 energy_crit_code    = ene_1[index_halfway] 
-print('Critical energy of the calculated spectrum of one particle is '+str(energy_crit_code)+'.')
+print('Critical energy of the calculated spectrum of one particle is '+ str(energy_crit_code)+'.')
 
 #plt.plot(ene_1/1000,moving_average)
 index_of_max = np.argmax(moving_average)

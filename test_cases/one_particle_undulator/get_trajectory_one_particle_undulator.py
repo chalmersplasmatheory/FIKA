@@ -1,9 +1,13 @@
 # Import libraries
 import numpy as np
+import os
 from numpy import sin,sqrt
 from scipy.integrate import cumtrapz
 from scipy.constants import c, m_e, epsilon_0, e, hbar
 import h5py
+
+# Create a string representing the closest common directory
+base_folder = os.path.dirname(os.path.abspath(__file__))
 
 # Indicate parameters for the trajectory calculation
 dt_ret     = 0.01e-15                            # timestep
@@ -47,7 +51,7 @@ data = {
 }
 
 # Write the dataset for one particle into a .h5 file
-with h5py.File('test_cases/one_particle_undulator/particle_trajectory.h5', 'w') as f:
+with h5py.File(base_folder + '/particle_trajectory.h5', 'w') as f:
     for id, arrays in data.items():
         grp = f.create_group(str(id))
         for key, values in arrays.items():

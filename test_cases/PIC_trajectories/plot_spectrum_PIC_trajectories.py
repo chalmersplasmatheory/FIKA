@@ -9,6 +9,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 from scipy.constants import c, epsilon_0, hbar, e
+import os
+
+# Create a string representing the closest common directory
+base_folder = os.path.dirname(os.path.abspath(__file__))
 
 # Function to plot the data
 def plot_spectrum(x, y, x_label, y_label, label, color, linestyle):
@@ -33,13 +37,13 @@ def read_data_to_plot(folder):
     return ene, spectrum_ene, t, spectrum_t
 
 # Reading data from HDF5 file for the case without macroparticle weights, serial calculation
-ene_ser, spectrum_ene_ser, t_ser, spectrum_t_ser = read_data_to_plot('test_cases/PIC_trajectories/no_weights_serial/')
+ene_ser, spectrum_ene_ser, t_ser, spectrum_t_ser = read_data_to_plot(base_folder + '/no_weights_serial/')
 # Reading data from HDF5 file for the case with macroparticle weights, serial calculation
-ene_w_ser, spectrum_ene_w_ser, t_w_ser, spectrum_t_w_ser = read_data_to_plot('test_cases/PIC_trajectories/weights_serial/')
+ene_w_ser, spectrum_ene_w_ser, t_w_ser, spectrum_t_w_ser = read_data_to_plot(base_folder + '/weights_serial/')
 # Reading data from HDF5 file for the case without macroparticle weights, parallel calculation on 4 mpi processes
-ene_par, spectrum_ene_par, t_par, spectrum_t_par = read_data_to_plot('test_cases/PIC_trajectories/no_weights_parallel/')
+ene_par, spectrum_ene_par, t_par, spectrum_t_par = read_data_to_plot(base_folder + '/no_weights_parallel/')
 # Reading data from HDF5 file for the case with macroparticle weights, parallel calculation on 4 mpi processes
-ene_w_par, spectrum_ene_w_par, t_w_par, spectrum_t_w_par = read_data_to_plot('test_cases/PIC_trajectories/weights_parallel/')
+ene_w_par, spectrum_ene_w_par, t_w_par, spectrum_t_w_par = read_data_to_plot(base_folder + '/weights_parallel/')
 
 
 # Plotting the energy spectrum without macroparticle weights, energy is in keV
@@ -49,7 +53,8 @@ plot_spectrum(ene_par / 1000, spectrum_ene_par ,'$E_{ph}$ [keV]',r'$\frac{d^2 W}
 plt.xlim([0,3])
 plt.legend(fontsize=14, frameon=False)
 plt.tight_layout()
-plt.savefig('test_cases/PIC_trajectories/macroparticles_ene_spectrum.png')
+plt.savefig(base_folder + '/macroparticles_ene_spectrum.png')
+plt.savefig(base_folder + '/macroparticles_ene_spectrum.pdf')
 
 # Plotting the energy spectrum with macroparticle weights, energy is in keV
 fig, ax = plt.subplots()
@@ -58,7 +63,8 @@ plot_spectrum(ene_w_par / 1000, spectrum_ene_w_par ,'$E_{ph}$ [keV]',r'$\frac{d^
 plt.xlim([0,3])
 plt.legend(fontsize=14, frameon=False)
 plt.tight_layout()
-plt.savefig('test_cases/PIC_trajectories/real_particles_ene_spectrum.png')
+plt.savefig(base_folder + '/real_particles_ene_spectrum.png')
+plt.savefig(base_folder + '/real_particles_ene_spectrum.pdf')
 
 # Plotting the temporal profile without macroparticle weights, seconds are converted to fs
 fig, ax = plt.subplots()
@@ -66,7 +72,9 @@ plot_spectrum(t_ser / 1e-15, spectrum_t_ser ,'$t$ [fs]', r'$\frac{d^2 W}{\rm{d}t
 plot_spectrum(t_par / 1e-15, spectrum_t_par ,'$t$ [fs]', r'$\frac{d^2 W}{\rm{d}t \rm{d}\Omega}$ [$\rm{J}$ $\rm{s}^{-1}$ $\rm{sr}^{-1}$]',  'No weights, parallel 4 mpi processes' ,'red','dashed')
 plt.legend(fontsize=14, frameon=False)
 plt.tight_layout()
-plt.savefig('test_cases/PIC_trajectories/macroparticles_spectrum_t.png')
+plt.savefig(base_folder + '/macroparticles_spectrum_t.png')
+plt.savefig(base_folder + '/macroparticles_spectrum_t.pdf')
+
 
 # Plotting the temporal profile with macroparticle weights, seconds are converted to fs
 fig, ax = plt.subplots()
@@ -74,7 +82,8 @@ plot_spectrum(t_w_ser / 1e-15, spectrum_t_w_ser ,'$t$ [fs]', r'$\frac{d^2 W}{\rm
 plot_spectrum(t_w_par / 1e-15, spectrum_t_w_par,'$t$ [fs]', r'$\frac{d^2 W}{\rm{d}t \rm{d}\Omega}$ [$\rm{J}$ $\rm{s}^{-1}$ $\rm{sr}^{-1}$]',  'Weights,  parallel 4 mpi processes', 'green', 'dashed')
 plt.legend(fontsize=14, frameon=False)
 plt.tight_layout()
-plt.savefig('test_cases/PIC_trajectories/real_particles_spectrum_t.png')
+plt.savefig(base_folder + '/real_particles_spectrum_t.png')
+plt.savefig(base_folder + '/real_particles_spectrum_t.pdf')
 
 plt.show()
 

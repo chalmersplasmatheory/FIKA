@@ -1,9 +1,13 @@
 # Import libraries
 import numpy as np
 from numpy import sin, sqrt
-from scipy.integrate import cumtrapz
+from scipy.integrate import cumulative_trapezoid
 from scipy.constants import c, m_e, epsilon_0, e, hbar
 import h5py
+import os
+
+# Create a string representing the closest common directory
+base_folder = os.path.dirname(os.path.abspath(__file__))
 
 # Indicate parameters for the trajectory calculation
 dt_ret     = 0.01e-15                                     # timestep
@@ -28,7 +32,7 @@ by       = vy / c                                         # normalized y velocit
 vec_ones = np.ones(np.size(by))                           # unit vector in the size of by
 bx       = np.sqrt(vec_ones-vec_ones/(gamma*gamma)-by*by) # normalized x velocity from gamma and by
 vx       = bx * c                                         # x velocity
-x        = cumtrapz(vx, t_ret, initial = t_ret[0])        # x positions from integration
+x        = cumulative_trapezoid(vx, t_ret, initial = t_ret[0])        # x positions from integration
 z        = np.zeros(np.size(x))                           # z positions - empty array (no motion)
 vz       = np.zeros(np.size(x))                           # z velocity - empty array (no motion)
 
@@ -47,7 +51,7 @@ data = {
 }
 
 # Write the dataset for one particle into a .h5 file
-with h5py.File('test_cases/one_particle_transition_regime/particle_trajectory.h5', 'w') as f:
+with h5py.File(base_folder + '/particle_trajectory.h5', 'w') as f:
     for id, arrays in data.items():
         grp = f.create_group(str(id))
         for key, values in arrays.items():

@@ -1,10 +1,14 @@
 # Import libraries and data info from get_trajectory_one_particle_undulator script
+import os
 import matplotlib.pyplot as plt
 import matplotlib
 from get_trajectory_one_particle_undulator import *
 
+# Create a string representing the closest common directory
+base_folder = os.path.dirname(os.path.abspath(__file__))
+
 # Read data from FIKA simulation:
-with h5py.File('test_cases/one_particle_undulator/final_spectrum.h5', 'r') as file:
+with h5py.File(base_folder + '/final_spectrum.h5', 'r') as file:
     ene          = np.array(file['ene'])
     spectrum_ene = np.array(file['spectrum_ene'])
     signal_time  = np.array(file['t'])
@@ -30,7 +34,8 @@ ax.tick_params(axis="x",direction="in", bottom=True, top=True, left=True, right=
 ax.tick_params(axis="y",direction="in", bottom=True, top=True, left=True, right=True)
 # Fit figure to the figure box and save
 plt.tight_layout()
-plt.savefig('test_cases/one_particle_undulator/temporal_profile.png')
+plt.savefig(base_folder + '/temporal_profile.png')
+plt.savefig(base_folder + '/temporal_profile.pdf')
 
 # Plot energy spectrum
 fig, ax = plt.subplots()
@@ -44,7 +49,8 @@ plt.xticks(fontsize = 14)
 plt.yticks(fontsize = 14)
 plt.xlim([0,50])
 plt.tight_layout()
-plt.savefig('test_cases/one_particle_undulator/energy_spectrum.png')
+plt.savefig(base_folder + '/energy_spectrum.png')
+plt.savefig(base_folder + '/energy_spectrum.pdf')
 
 # Calculate expected outcome with analytical formula and compare it with the code outcome.
 K       = 1.33e-10 * sqrt(gamma*n_e/1e6) * r_beta/1e-6

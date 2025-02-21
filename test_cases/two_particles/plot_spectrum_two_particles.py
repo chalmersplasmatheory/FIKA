@@ -2,23 +2,26 @@
 import matplotlib
 import matplotlib.pyplot as plt
 from get_trajectories_two_particles import *
+import os
 
-# Folder fit the FIKA output
-folder     = 'test_cases/two_particles/'
+# Create a string representing the closest common directory
+base_folder = os.path.dirname(os.path.abspath(__file__))
 
 # Read spectrum for one particle
-with h5py.File(folder + 'one/final_spectrum.h5', 'r') as file:
+with h5py.File(base_folder + '/one/individual_spectra.h5', 'r') as file:
     ene_1        = np.array(file['ene'])
     spectrum_1   = np.array(file['spectrum_ene'])
     t_1          = np.array(file['t'])
     spectrum_t_1 = np.array(file['spectrum_t'])
 
 # Read spectrum for two indentical particles
-with h5py.File(folder + 'two/final_spectrum.h5', 'r') as file:
+with h5py.File(base_folder + '/two/individual_spectra.h5', 'r') as file:
     ene_2        = np.array(file['ene'])
     spectrum_2   = np.array(file['spectrum_ene'])
     t_2          = np.array(file['t'])
     spectrum_t_2 = np.array(file['spectrum_t'])
+    
+print('hej')
 
 # Initiate the plot of spectrum at the observer position. 
 # Parameters r = 1, phi = 0, theta = pi/2 were used in input.py.
@@ -47,7 +50,8 @@ plt.legend(frameon = False, fontsize = 14)
 # Fit the figure to the box
 plt.tight_layout()
 # Save the figure
-plt.savefig('test_cases/two_particles/energy_spectrum.png')
+plt.savefig(base_folder + '/energy_spectrum.png')
+plt.savefig(base_folder + '/energy_spectrum.pdf')
 
 # Prepare similar figure for the temporal profile and save it
 fig, ax = plt.subplots()
@@ -65,7 +69,8 @@ mf = matplotlib.ticker.ScalarFormatter(useMathText=True)
 plt.gca().yaxis.set_major_formatter(mf)
 ax.yaxis.offsetText.set_fontsize(14)
 plt.tight_layout()
-plt.savefig('test_cases/two_particles/temporal_profile.png')
+plt.savefig(base_folder + '/temporal_profile.png')
+plt.savefig(base_folder + '/temporal_profile.pdf')
 
 # Show plots
 plt.show()
