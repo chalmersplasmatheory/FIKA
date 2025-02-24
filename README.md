@@ -27,7 +27,7 @@ It is recommended to create a virtual enviroment when running parallelies in ord
   pip install mpi4py 
   ```
 
-It is recommended to create a virtual environment when running parallelies in order to create isolated library dependences. Here is an example showing how to set up the virtual environment:
+It is recommended to create a virtual environment when running parallelies in order to create isolated library dependences. Here is an example showing how to set up the virtual environment and install HDF5 with an MPI implementation:
   ```bash
   # Create and activate virtual environment
   python3 -m venv myenv
@@ -46,7 +46,7 @@ and for Windows run:
   ```bash
   something else
   ```
-Once compatible versions of MPI and HDF5 have been installed, compile HDF5 with MPI and install h5py by running,
+Note that this is only an example. It is not required to remove `MPICH` dependencies as long as your version of `MPICH` is compatible with your HDF5 version. Make sure however, that your MPI implementation is unaffected by other dependencies. Once compatible versions of MPI and HDF5 have been installed, compile HDF5 with MPI and install h5py by running,
 
 for MacOS:
   ```bash
