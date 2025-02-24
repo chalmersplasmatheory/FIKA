@@ -15,7 +15,7 @@ For the MPI-supported parallel version additional requirements are necessary:
 - HDF5 needs to be compiled with MPI Support in order to use `h5py` correctly
 - `mpi4py` library
 
-It is recommended to create a virtual enviroment when running parallelies in order to create isolated library dependences. Here is a possible example to run the parallel enviroment with the required dependencies:
+It is recommended to create a virtual enviroment when running parallelies in order to create isolated library dependences. Here is a possible example to run the parallel environment with the required dependencies:
 
   ```bash
   # Create and activate virtual environment
@@ -27,39 +27,39 @@ It is recommended to create a virtual enviroment when running parallelies in ord
   pip install mpi4py 
   ```
 
-It is recommended to create a virtual enviroment when running parallelies in order to create isolated library dependences. Here is an example showing how to set up the virtual environment:
+It is recommended to create a virtual environment when running parallelies in order to create isolated library dependences. Here is an example showing how to set up the virtual environment:
   ```bash
   # Create and activate virtual environment
   python3 -m venv myenv
   source myenv/bin/activate
   ```
-If a compatible set of MPI implementation and HDF5 is not installed:
+If a compatible set of MPI implementation and HDF5 is not installed,
 
-For MacOS (and Linux?) run:
+for MacOS (and Linux?) run:
   ```bash
   brew unlink mpich
   brew install open-mpi
   brew unlink hdf5
   brew install
   ```
-For Windows run:
+and for Windows run:
   ```bash
   something else
   ```
-Once compatible versions of MPI and HDF5 have been installed, compile HDF5 with MPI and install h5py by running:
+Once compatible versions of MPI and HDF5 have been installed, compile HDF5 with MPI and install h5py by running,
 
-For MacOS:
+for MacOS:
   ```bash
   export CC=$(which mpicc)
   export HDF5_DIR=$(brew --prefix hdf5-mpi)
   HDF5_MPI="ON" pip install --no-binary=h5py h5py
   pip install mpi4py
   ```
-For Windows run:
+and for Windows:
   ```bash
   something else
   ```
-
+Before compiling the parallel version of the FIKA code, make sure all requirements for the serial version are also installed in the virtual environment.
 
 ## Running FIKA
 
