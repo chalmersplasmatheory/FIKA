@@ -40,7 +40,7 @@ for MacOS (and Linux?) run:
   brew unlink mpich
   brew install open-mpi
   brew unlink hdf5
-  brew install
+  brew install hdf5-mpi
   ```
 and for Windows run:
   ```bash
