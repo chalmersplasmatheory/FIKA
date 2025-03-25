@@ -35,16 +35,12 @@ It is recommended to create a virtual environment when running parallelies in or
   ```
 If a compatible set of MPI implementation and HDF5 is not installed,
 
-for MacOS (and Linux?) run:
+for MacOS run:
   ```bash
   brew unlink mpich
   brew install open-mpi
   brew unlink hdf5
   brew install hdf5-mpi
-  ```
-and for Windows run:
-  ```bash
-  something else
   ```
 Note that this is only an example. It is not required to remove or unlink `MPICH` dependencies as long as your version of `MPICH` is compatible with your HDF5 version. Make sure however, that your MPI implementation is unaffected by other dependencies. Once compatible versions of MPI and HDF5 have been installed, compile HDF5 with MPI and install h5py by running,
 
@@ -54,10 +50,6 @@ for MacOS:
   export HDF5_DIR=$(brew --prefix hdf5-mpi)
   HDF5_MPI="ON" pip install --no-binary=h5py h5py
   pip install mpi4py
-  ```
-and for Windows:
-  ```bash
-  something else
   ```
 Before compiling the parallel version of the FIKA code, make sure all requirements for the serial version are also installed in the virtual environment.
 
@@ -238,10 +230,10 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
     python run_converter.py
     ```
 
-## How to cite FIKA
-When publishing simulation results involving FIKA, **please cite the following article**:
+//## How to cite FIKA
+//When publishing simulation results involving FIKA, **please cite the following article**:
 
-  D. Maslarova, A. Hansson, M. Luo, V. Horný, J. Ferri, I. Pusztai, and T. Fülöp, Batch Bayesian optimization of attosecond betatron pulses from laser wakefield acceleration, **publisher's name** (2025)
+//D. Maslarova, A. Hansson, M. Luo, V. Horný, J. Ferri, I. Pusztai, and T. Fülöp, Batch Bayesian optimization of attosecond betatron pulses from laser wakefield acceleration, **publisher's name** (2025)
 
 ## References
 [1]  J. Derouillat, A. Beck, F. Pérez, T. Vinci, M. Chiaramello, A. Grassi, M. Flé, G. Bouchard, I. Plotnikov, N. Aunai, J. Dargent, C. Riconda and M. Grech, SMILEI: a collaborative, open-source, multi-purpose particle-in-cell code for plasma simulation, Comput. Phys. Commun. 222, 351-373 (2018), arXiv:1702.05128
