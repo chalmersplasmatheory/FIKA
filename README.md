@@ -230,10 +230,10 @@ For users of the Smilei particle-in-cell code [1], an extra module which convert
     python run_converter.py
     ```
 
-<!--## How to cite FIKA-->
+<!--## How to cite FIKA
 When publishing simulation results involving FIKA, **please cite the following article**:
 
-D. Maslarova, A. Hansson, M. Luo, V. Horný, J. Ferri, I. Pusztai, and T. Fülöp, Batch Bayesian optimization of attosecond betatron pulses from laser wakefield acceleration, **publisher's name** (2025)
+D. Maslarova, A. Hansson, M. Luo, V. Horný, J. Ferri, I. Pusztai, and T. Fülöp, Batch Bayesian optimization of attosecond betatron pulses from laser wakefield acceleration, **publisher's name** (2025)-->
 
 ## References
 [1]  J. Derouillat, A. Beck, F. Pérez, T. Vinci, M. Chiaramello, A. Grassi, M. Flé, G. Bouchard, I. Plotnikov, N. Aunai, J. Dargent, C. Riconda and M. Grech, SMILEI: a collaborative, open-source, multi-purpose particle-in-cell code for plasma simulation, Comput. Phys. Commun. 222, 351-373 (2018), arXiv:1702.05128
