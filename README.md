@@ -159,9 +159,9 @@ To execute the FIKA simulation, follow these steps:
 
     -  `zero_padding_res_factor`
 
-        Controls
+        Parameter between 0 and 1 which controls the balance between zero padding and energy resolution. A low `zero_padding_res_factor` value implies high resolution. Beware that a `zero_padding_res_factor` below 0.5 will dramatically affect the runtime and file sizes. Example: 
 
-           zero_padding_res_factor  = 200
+           zero_padding_res_factor  = 1
 
 
 4. Run the simulation using the following command in case of parallel = False:
