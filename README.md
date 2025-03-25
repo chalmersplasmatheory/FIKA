@@ -161,7 +161,7 @@ To execute the FIKA simulation, follow these steps:
 
         Controls
 
-       zero_padding_res_factor  = 200
+           zero_padding_res_factor  = 200
 
 
 4. Run the simulation using the following command in case of parallel = False:
