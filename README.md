@@ -157,9 +157,11 @@ To execute the FIKA simulation, follow these steps:
 
               print_every_spectrum_sum  = 200                                        
 
-       -  `zero_padding_res_factor`
+    -  `zero_padding_res_factor`
 
-            Controls
+        Controls
+
+       zero_padding_res_factor  = 200
 
 
 4. Run the simulation using the following command in case of parallel = False:
