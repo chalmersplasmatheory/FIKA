@@ -2,6 +2,7 @@
 from numpy import pi, sin, cos, sqrt
 import numpy as np
 from scipy.constants import c, epsilon_0, hbar, e
+from scipy.interpolate import RegularGridInterpolator
 import h5py
 import os
 
@@ -151,6 +152,32 @@ def get_ene_range(E_slice_eV, file_to_sum):
   num_ene       = int(round(max_ene/E_slice_eV))
   ene_range     = np.linspace(0, max_ene, num = num_ene)
   return ene_range  
+
+# Interpolates a 2D Cartesian matrix to a higher resolution grid.
+def cartesian_interpolate(matrix, side1, side2, output_size=101):
+
+  # Compute new grid edges
+  side1 = np.linspace(np.min(side1), np.max(side1), output_size)
+  side2 = np.linspace(np.min(side2), np.max(side2), output_size)
+
+  # Recreate examples of grid edges
+  h, w = matrix.shape
+  y = np.linspace(0, 1, h)
+  x = np.linspace(0, 1, w)
+
+  # Interpolate
+  interpolator = RegularGridInterpolator((y, x), matrix, bounds_error=False, fill_value=0)
+
+  # Make new grid
+  y_new = np.linspace(0, 1, output_size)
+  x_new = np.linspace(0, 1, output_size)
+  X_new, Y_new = np.meshgrid(x_new, y_new)
+
+  # Interpolate new grid
+  points = np.stack([Y_new.ravel(), X_new.ravel()], axis=-1)
+  result = interpolator(points).reshape((output_size, output_size))
+
+  return side1, side2, result
 
 # For writing the summation of all particle spectra into the final output file
 # Saves the aggregated spectra and temporal profiles to a final HDF5 file

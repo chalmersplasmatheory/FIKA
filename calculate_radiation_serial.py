@@ -174,6 +174,65 @@ def calculate_spectrum_one_particle(charge, r, phi, theta, input_file, output_fo
       print_calculation_progress(curr_num_par, print_every_par_spectrum)
       curr_num_par += 1 
     return particles_total, particles_skipped
+  
+def calculate_spectrum_one_particle_no_inter(charge, r, phi, theta, input_file, weights):
+
+  # Open the input file containing particle trajectories and properties
+  with h5py.File(input_file, 'r') as file:
+    particle_power = 0
+    
+    for i, id in enumerate(file):
+      if i % 25 != 0:
+        continue
+      # Extract trajectory and velocity data for the current particle
+      t_ret = np.array(file[id]['time'])
+      x     = np.array(file[id]['x'])
+      y     = np.array(file[id]['y'])
+      z     = np.array(file[id]['z'])
+      vx    = np.array(file[id]['vx'])
+      vy    = np.array(file[id]['vy'])
+      vz    = np.array(file[id]['vz'])
+      # Extract particle weight if PIC weights are being considered
+      # if weights == True:
+      #   weight = np.array(file[id]['PIC_macroparticle_weight'])
+
+      # Skip particles with insufficient data for processing
+      if len(vx) < 3:
+        continue
+
+      # Calculate the time step from the original data
+      dt_ret = calculate_dtime(t_ret)
+
+      # Check if the timesteps are equally split
+      # The code currently operates only with continous-like equidistant times
+      continue_outer_loop = False
+      for idt in range(1, len(t_ret)):
+        # Check if the timestep-size differences are in the float tolerance
+        if not math.isclose(t_ret[idt]-t_ret[idt-1], dt_ret):
+          #print('The trajectory of particle with id ' + str(id) + ' does not have equally spaced timesteps. Skipping.')
+          continue_outer_loop = True # break the loop and skip the particle in case of not equal timesteps
+          break
+      # Check the flag to continue the outer loop
+      if continue_outer_loop:
+        continue
+
+      # Perform a series of calculations to determine the radiation characteristics of the particle
+      beta                = calculate_beta(vx, vy, vz)
+      beta_dot            = calculate_beta_dot(beta, dt_ret )
+      pos_vec             = calculate_pos_vec(r, phi, theta)  
+      R0                  = calculate_R0(pos_vec)
+      n                   = calculate_n(pos_vec, R0) 
+      R                   = calculate_R(x, y, z, r, phi, theta)  
+      t                   = calculate_t(t_ret, R)  
+      E_x, E_y, E_z       = calculate_E(charge, R, n, beta, beta_dot)
+      signal_x            = R * E_x
+      signal_y            = R * E_y
+      signal_z            = R * E_z
+      signal_squared      = np.square(signal_x) + np.square(signal_y) + np.square(signal_z)      
+      dW_dt_dOmega        = c * epsilon_0 * signal_squared 
+      particle_power += (t[2] - t[1]) * np.sum(dW_dt_dOmega)
+    
+    return particle_power
 
 # Function to aggregate spectra from all particles and save the final results
 # Summarizes the collective radiation impact from all particles

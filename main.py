@@ -1,4 +1,7 @@
 from input import *
+import time
+import numpy as np
+from utils import *
 import os 
 
 # Get the name of the variable
@@ -52,6 +55,29 @@ if __name__ == "__main__":
     check_if_the_value_numeric(E_slice_eV)
     check_if_the_value_numeric(t_slice_s)
     check_if_the_value_numeric(print_every_spectrum_sum)
+  
+  if spatial_profile_generation:
+    from calculate_radiation_serial import calculate_spectrum_one_particle_no_inter
+    phi_angles = np.linspace(boundaries[0], boundaries[1], resolution)
+    theta_angles = phi_angles.copy()
+    phi_grid, theta_grid = np.meshgrid(phi_angles, theta_angles, indexing='ij')
+    angles = np.stack([phi_grid.ravel(), theta_grid.ravel()], axis=-1)
+
+    remove_existing_file(os.path.join(output_folder, 'individual_spectra.h5'))
+    spatial_profile_path = os.path.join(output_folder, 'spatial_profile.txt')
+    with open(spatial_profile_path, 'w') as file:
+      file.write('Spatial profiling data\n')
+
+    for index, (phi_offset, theta_offset) in enumerate(angles):
+      start = time.time()
+      total_power = calculate_spectrum_one_particle_no_inter(charge, r, phi + phi_offset, theta + theta_offset, input_file, PIC_macroparticle_weights) * np.sin(theta + theta_offset)
+      if (index+1) % 1 == 0:
+        print(f"{index+1}/{len(angles)} pixels calculated")
+      # /(np.sin(theta + theta_offset) * np.cos(phi + phi_offset))
+      with open(spatial_profile_path, 'a') as file:
+        file.write(f"{total_power}\n")
+      print(time.time()-start)
+    exit()
 
   # Run the simulation  
   if parallel == False:
@@ -74,3 +100,10 @@ if __name__ == "__main__":
       calculate_spectrum_all_particles(output_folder, E_slice_eV, t_slice_s, PIC_macroparticle_weights, print_every_spectrum_sum)
   else:
     print('Choose parallel = False or parallel = True in input.py file.')
+
+  
+    
+
+
+
+
