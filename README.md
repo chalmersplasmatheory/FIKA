@@ -163,8 +163,25 @@ To execute the FIKA simulation, follow these steps:
 
            zero_padding_res_factor  = 1
 
+     - `spatial_profile_generation`
 
-4. Run the simulation using the following command in case of parallel = False:
+       When True, this parameter cancels the calculation of temporal and spectral profiles and optimizes the calculation of a spatialfrofile.
+
+    - `boundaries`
+
+      This parameter sets the upper and lower boundary of the square limiting the spatial profile.
+
+    - `resolution`
+  
+      Parameter that controls how many pixels the spatial profile will contain. The grid will be of dimension resolution x resolution
+
+    - `do_interpolation`
+  
+      This parameter dictates whether or not you want the spatial profile to be interpolated. Note that this is only a visual effect that can be switched on and off even after the calculation of the spatial profile has been carried out. 
+
+
+
+3. Run the simulation using the following command in case of parallel = False:
 
     ```bash
     python main.py
