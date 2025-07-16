@@ -8,8 +8,8 @@ import os
 # Create a string representing the closest common directory
 base_folder = os.path.dirname(os.path.abspath(__file__))
 
-input_file                = base_folder + '/test_cases/bref/particle_trajectory.h5' # Input file
-output_folder             = base_folder + '/test_cases/bref/' # Output folder, include / at the end  
+input_file                = base_folder + '/test_cases/one_particle_undulator/particle_trajectory.h5' # Input file
+output_folder             = base_folder + '/test_cases/one_particle_undulator/' # Output folder, include / at the end
 PIC_macroparticle_weights = False                                              # Include PIC macroparticle weights or not
 parallel                  = False                                              # Serial or parallel computing
 charge                    = -e                                                 # Particle charge                                                                # Max photon energy for Fourier sampling, the sampling is 20x this value
@@ -27,7 +27,7 @@ print_every_spectrum_sum  = 1000                                               #
 zero_padding_res_factor   = 1                                                  # Set to a value between in the interval (0,1] to control the resolution
 
 # INPUT FOR SPATIAL PROFILING
-spatial_profile_generation = True                                             # When true, main.py generates a spatial profile of the betatron beam
+spatial_profile_generation = True                                              # When true, main.py generates a spatial profile of the betatron beam
 boundaries = [-0.025, 0.025]                                                   # phi, theta in rad: Angular boundaries for the spatial profile
-resolution = 25                                                                 # Sets side length of pixel grid
-do_interpolation = True                                                       # When true, the spatial profile is displayed interpolated (only visual effect)
+resolution = 15                                                                # Sets side length of pixel grid
+do_interpolation = False                                                       # When true, the spatial profile is displayed interpolated (only visual effect)

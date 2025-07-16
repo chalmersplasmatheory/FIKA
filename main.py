@@ -67,6 +67,9 @@ if __name__ == "__main__":
     spatial_profile_path = os.path.join(output_folder, 'spatial_profile.txt')
     with open(spatial_profile_path, 'w') as file:
       file.write('Spatial profiling data\n')
+      file.write(f'{resolution}\n')
+      file.write(f'{boundaries[0]}\n')
+      file.write(f'{boundaries[1]}\n')
 
     for index, (phi_offset, theta_offset) in enumerate(angles):
       start = time.time()
