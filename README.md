@@ -3,9 +3,9 @@
 
 
 <picture>
-  <source srcset="/media/image.png" width="300" align="right" media="(prefers-color-scheme: dark)">
-  <source srcset="/media/figureQ10.png" width="300" align="right" media="(prefers-color-scheme: light)">
-  <img src="images/fika-light.png" alt="FIKA Architecture" width="300" align="right">
+  <source srcset="/media/logo_d.png" width="100" align="right" media="(prefers-color-scheme: dark)">
+  <source srcset="/media/logo_l.png" width="100" align="right" media="(prefers-color-scheme: light)">
+  <img src="images/fika-light.png" alt="FIKA Architecture" width="100" align="right">
 </picture>
 
 This repository contains the Far-field Intensity through Kinetic Analysis (FIKA) code, a Python-based computational tool designed for analyzing far-field radiation intensity from accelerated particles. FIKA leverages the Liénard-Wiechert potentials to calculate the radiation emitted by charged particles directly from their trajectories. The code calculates the temporal profile of the radiated spectrum. It also uses Fourier transform techniques to analyze the frequency spectrum of the radiation.
