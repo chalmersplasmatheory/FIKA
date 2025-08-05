@@ -161,31 +161,33 @@ To execute the FIKA simulation, follow these steps:
 
         Parameter between 0 and 1 which controls the balance between zero padding and energy resolution. A low `zero_padding_res_factor` value implies high resolution. Beware that a `zero_padding_res_factor` below 0.5 will dramatically affect the runtime and file sizes. Example: 
 
-           zero_padding_res_factor  = 1
+              zero_padding_res_factor  = 1
 
      - `spatial_profile_generation`
 
-       When True, this parameter cancels the calculation of temporal and spectral profiles and optimizes the calculation of a spatialfrofile.
+       Boolean that, when set to `True`, replaces the calculation of spectral and temporal profiles with a calculation of a spatial profile. Calculations of a spatial profiles do not require `print_every_par_spectrum`, `sum_spectra`, `E_slice_eV`, `t_slice_s` or `print_every_spectrum` to be set to specific values. 
 
-          spatial_profile_generation  = True
+              spatial_profile_generation  = True
 
     - `boundaries`
 
-      This parameter sets the upper and lower boundary of the square limiting the spatial profile.
+        List with two floats (with unit radians) that lets sets the limits for the square in which the spatial profile is calculated.
 
-        boundaries = [-0.1, 0.1]
+              boundaries = [-0.2, 0.1]
+
+        This example will create a box with boundaries `phi - 0.2`, `phi + 0.1`, `theta - 0.2` and `theta + 0.1`. 
 
     - `resolution`
   
-      Parameter that controls how many pixels the spatial profile will contain. The grid will be of dimension resolution x resolution
+        Integer parameter that sets the number of columns and rows in the spatial profile square. The number of pixels will thus be `resolution * resolution`.
 
-        resolution = 5
+              resolution = 5
 
     - `do_interpolation`
   
-      This parameter dictates whether or not you want the spatial profile to be interpolated. Note that this is only a visual effect that can be switched on and off even after the calculation of the spatial profile has been carried out.
+        Boolean parameter dictating whether or not you want the spatial profile to be interpolated. Note that this is only a visual effect that can be switched on and off even after the calculation of the spatial profile has been carried out.
 
-        do_interpolation = False
+              do_interpolation = False
 
 
 
