@@ -161,17 +161,17 @@ To execute the FIKA simulation, follow these steps:
 
         Parameter between 0 and 1 which controls the balance between zero padding and energy resolution. A low `zero_padding_res_factor` value implies high resolution. Beware that a `zero_padding_res_factor` below 0.5 will dramatically affect the runtime and file sizes. Example: 
 
-              zero_padding_res_factor  = 1
+              zero_padding_res_factor = 1
 
      - `spatial_profile_generation`
 
-       Boolean that, when set to `True`, replaces the calculation of spectral and temporal profiles with a calculation of a spatial profile. Calculations of a spatial profiles do not require `print_every_par_spectrum`, `sum_spectra`, `E_slice_eV`, `t_slice_s` or `print_every_spectrum` to be set to specific values. 
+       Boolean that, when set to `True`, replaces the calculation of spectral and temporal profiles with a calculation of a spatial profile. Calculations of spatial profiles do not require `print_every_par_spectrum`, `sum_spectra`, `E_slice_eV`, `t_slice_s` or `print_every_spectrum` to be set to specific values. 
 
-              spatial_profile_generation  = True
+              spatial_profile_generation = True
 
     - `boundaries`
 
-        List with two floats (with unit radians) that lets sets the limits for the square in which the spatial profile is calculated.
+        List with two floats (with unit radians) that sets the limits for the square in which the spatial profile is calculated.
 
               boundaries = [-0.2, 0.1]
 
