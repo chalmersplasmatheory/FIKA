@@ -3,7 +3,7 @@
 
 
 <picture>
-  <source srcset="/media/logo_d.png" width="100" align="right" media="(prefers-color-scheme: dark)">
+  <source srcset="/media/colored-logo.png" width="100" align="right" media="(prefers-color-scheme: dark)">
   <source srcset="/media/logo_l.png" width="100" align="right" media="(prefers-color-scheme: light)">
   <img src="images/fika-light.png" alt="FIKA Architecture" width="100" align="right">
 </picture>
