@@ -167,17 +167,25 @@ To execute the FIKA simulation, follow these steps:
 
        When True, this parameter cancels the calculation of temporal and spectral profiles and optimizes the calculation of a spatialfrofile.
 
+          spatial_profile_generation  = True
+
     - `boundaries`
 
       This parameter sets the upper and lower boundary of the square limiting the spatial profile.
+
+        boundaries = [-0.1, 0.1]
 
     - `resolution`
   
       Parameter that controls how many pixels the spatial profile will contain. The grid will be of dimension resolution x resolution
 
+        resolution = 5
+
     - `do_interpolation`
   
-      This parameter dictates whether or not you want the spatial profile to be interpolated. Note that this is only a visual effect that can be switched on and off even after the calculation of the spatial profile has been carried out. 
+      This parameter dictates whether or not you want the spatial profile to be interpolated. Note that this is only a visual effect that can be switched on and off even after the calculation of the spatial profile has been carried out.
+
+        do_interpolation = False
 
 
 
