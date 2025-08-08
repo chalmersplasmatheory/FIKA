@@ -61,6 +61,8 @@ for MacOS:
   ```
 Before compiling the parallel version of the FIKA code, make sure all requirements for the serial version are also installed in the virtual environment.
 
+DISCLAIMER!!! There are configurations of the MPIO drivers that make the parallel version of FIKA not executable. However, there is yet no explanation to what causes this inconvenience. 
+
 ## Running FIKA
 
 To execute the FIKA simulation, follow these steps:
@@ -220,9 +222,9 @@ The output in the form of HDF file, named `individual_spectra.h5`, saved in the 
 
 In case `sum_spectra = True` ia specified by the user, another HDF5 file, `final_spectrum.h5`, is created, cointaining following groups:
    - `ene` : Energies of radiated photons in eV.
-   - `spectrum_ene` : Photon energy distribution \(\frac{d^2 W}{d \omega d\Omega}\) received by the observer summed for all the particles, expressed in the units of J·s/rad/sr.
+   - `spectrum_ene` : Photon energy distribution $\(\frac{d^2 W}{d \omega d\Omega}\)$ received by the observer summed for all the particles, expressed in the units of J·s/rad/sr.
    - `t` : Range of the observer time in s.
-   - `spectrum_t` : Spectral intensity \(\frac{d^2 W}{d t d\Omega}\) summed for all the particles, corresponding to the observer time in the units of J/s/sr.
+   - `spectrum_t` : Spectral intensity $\(\frac{d^2 W}{d t d\Omega}\)$ summed for all the particles, corresponding to the observer time in the units of J/s/sr.
 
 
 ## Smilei converter
