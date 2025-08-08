@@ -127,9 +127,11 @@ fig_e.legend(
     handlelength=1.5  # Adjust handle length for better spacing if needed
 )
 
-# Save and show the figure
-plt.savefig(base_folder + '/test_cases/' + case_name + '/' + output_file_name + '.png', dpi=300)
-plt.savefig(base_folder + '/test_cases/' + case_name + '/' + output_file_name + '.pdf', dpi=300)
+# Save and show the figures
+fig_t.savefig(base_folder + '/test_cases/' + case_name + '/' + output_file_name + '_temporal.png', dpi=300)
+fig_t.savefig(base_folder + '/test_cases/' + case_name + '/' + output_file_name + '_temporal.pdf', dpi=300)
+fig_e.savefig(base_folder + '/test_cases/' + case_name + '/' + output_file_name + '_spectral.png', dpi=300)
+fig_e.savefig(base_folder + '/test_cases/' + case_name + '/' + output_file_name + '_spectral.pdf', dpi=300)
 plt.show()
 
 # Produce text file with pulse characteristics
