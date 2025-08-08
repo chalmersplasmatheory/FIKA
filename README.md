@@ -61,7 +61,7 @@ for MacOS:
   ```
 Before compiling the parallel version of the FIKA code, make sure all requirements for the serial version are also installed in the virtual environment.
 
-DISCLAIMER!!! There are configurations of the MPIO drivers that make the parallel version of FIKA not executable. However, there is yet no explanation to what causes this inconvenience. 
+#NOTE: There are configurations of the MPIO drivers that make the parallel version of FIKA not executable. However, this inconvenience will be investigated.
 
 ## Running FIKA
 
