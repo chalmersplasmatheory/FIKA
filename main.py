@@ -72,14 +72,12 @@ if __name__ == "__main__":
       file.write(f'{boundaries[1]}\n')
 
     for index, (phi_offset, theta_offset) in enumerate(angles):
-      start = time.time()
       total_power = calculate_spectrum_one_particle_no_inter(charge, r, phi + phi_offset, theta + theta_offset, input_file, PIC_macroparticle_weights) * np.sin(theta + theta_offset)
       if (index+1) % 1 == 0:
         print(f"{index+1}/{len(angles)} pixels calculated")
       # /(np.sin(theta + theta_offset) * np.cos(phi + phi_offset))
       with open(spatial_profile_path, 'a') as file:
         file.write(f"{total_power}\n")
-      print(time.time()-start)
     exit()
 
   # Run the simulation  

@@ -7,7 +7,7 @@ base_folder = os.path.dirname(os.path.abspath(__file__))
 
 # Definitions of folders and configuration
 output_file_name = 'multiplot' 
-case_name = 'PIC_multicase' # name of the folder in which you keep the case folders
+case_name = 'multicase' # name of the folder in which you keep the case folders
 sim_folders     = ['case_1','case_2','case_3','case_4'] # names of the case folders
 legend_names= ['L1', 'L2', 'L3', 'L4']
 colors      = ['black', 'green', 'red', 'blue'] # this color list must hold at least as many colors as there are cases

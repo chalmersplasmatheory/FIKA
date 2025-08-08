@@ -22,8 +22,6 @@ theta_angles = phi_angles.copy()
 phi_grid, theta_grid = np.meshgrid(phi_angles, theta_angles, indexing='ij')
 angles = np.stack([phi_grid.ravel(), theta_grid.ravel()], axis=-1)
 
-
-
 # Compute total energy
 dphi = (boundaries_s[1] - boundaries_s[0]) / (resolution_s - 1)
 dtheta = dphi
