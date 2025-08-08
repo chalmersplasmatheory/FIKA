@@ -1,0 +1,1 @@
+The spatial profile feature is based on a particle trajectory file. When `spatial_profile_generation` is set to `True` in `input.py`, a file named `spatial_profile.txt` is created in the output folder. When you have such a file, you can immediately (without changing output folder in `input.py`) run `plot_spatial_profile.py` to obtain a plot like `spatial_profile1.png`.
